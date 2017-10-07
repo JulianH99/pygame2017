@@ -3,12 +3,12 @@ import pygame
 
 class PowerUp(pygame.sprite.Sprite):
     """
-        PowerUp class represents the powers or damages  that the ball can suffer
+        La clase PowerUp representa las mejoras o fallas que puede experimentar la pelota
     """
     def __init__(self, picture, type):
         """
-            picture(string) : path to the image to put in the sprite
-            type(obj) : type of the power up
+            picture(string) : ruta de la imagen del powerUp
+            type(obj) : tipo del powerUp
         """
         pygame.sprite.Sprite.__init__(self)
 

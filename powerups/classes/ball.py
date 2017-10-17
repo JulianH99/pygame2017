@@ -11,7 +11,7 @@ class Ball(pygame.sprite.Sprite):
         self.limit = limit
         self.image = pygame.image.load('./img/ball.png').convert()
         self.rect = self.image.get_rect()
-        self.rect.center = (20, self.limit - 20)
+        self.rect.center = (30, self.limit - 20)
         self.goes_up = True
         pygame.sprite.Sprite.__init__(self)
 

@@ -3,7 +3,7 @@ import pygame
 
 from classes.ball import Ball
 from classes.powerup import PowerUp
-from classes.effects import MoreLifeEffect
+from classes.effects import MoreLifeEffect, MoreScorePointsEffect
 
 # dimensiones de la ventana
 WIDTH = 800
@@ -21,7 +21,7 @@ pygame.display.set_caption("PowerUps")
 
 # creacion de Sprites
 ball = Ball(HEIGHT - 50)
-power_up = PowerUp("./img/power.png", MoreLifeEffect(), (WIDTH, HEIGHT))
+power_up = PowerUp("./img/morescore.png", MoreScorePointsEffect(), (WIDTH, HEIGHT))
 
 # grupo de sprites
 sprite_group = pygame.sprite.Group()

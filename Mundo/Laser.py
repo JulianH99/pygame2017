@@ -9,7 +9,9 @@ class Laser(Obstaculo):
 
     # constructor
     def __init__(self, ruta, ruta2, X, Y, danio):
-        super().__init__(ruta, X, Y, danio) # paso de valores para los atributos de la superclase
+
+        Obstaculo.__init__(self, ruta, X, Y, danio)
+
         self.horizontal = False  # laser horizontal o vertical
         self.activo = False  # activo o no
         self.ruta2 = ruta2  # ruta de la imagen del laser apagado

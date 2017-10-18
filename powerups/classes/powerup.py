@@ -20,7 +20,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.x_limit = limits[0] + 100          
 
         self.image = pygame.image.load(image).convert()
-        self.image.set_colorkey((0, 0, 0))
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.rect.center = (self.x_limit, self.y_limit)
 

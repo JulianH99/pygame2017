@@ -8,7 +8,7 @@ class PowerUp(pygame.sprite.Sprite):
 
     x_speed = -5
 
-    def __init__(self, image, effect, limits):
+    def __init__(self, effect, limits):
         """
             picture(string) : ruta de la imagen del powerUp
             type(obj) : tipo del powerUp
@@ -16,15 +16,14 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.effect = effect
         pygame.sprite.Sprite.__init__(self)
-        self.y_limit = limits[1] - 200
-        self.x_limit = limits[0] + 100          
+        self.y_limit = limits[1] - 100
+        self.x_limit = limits[0]        
 
-        self.image = pygame.image.load(image).convert()
+        self.image = pygame.image.load(effect.image).convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.rect.center = (self.x_limit, self.y_limit)
 
-        print "Hello from the powerup"
 
     def execute(self, ball):
         """

@@ -2,6 +2,9 @@
 
 from abc import ABCMeta, abstractmethod
 
+IMAGES_PATH = "./img/"
+
+
 # definicion de la clase Effect
 class Effect:
     """
@@ -10,6 +13,7 @@ class Effect:
         definicion
     """
     __metaclass__ = ABCMeta
+    image = ""
 
     @abstractmethod
     def apply_over(self, ball):
@@ -46,6 +50,7 @@ class ReduceOrAddEffect(Effect):
         :return:
         """
         pass
+
 # fin clase ReduceOrAddEffect
 
 
@@ -54,6 +59,8 @@ class MoreLifeEffect(ReduceOrAddEffect):
     """
         Representa el efecto encargado de sumar puntos de vida a la pelota
     """
+    image = IMAGES_PATH + "morelife.png"
+
     def apply_over(self, ball):
         # si existe el atributo 'life_points' en la calse bola...
         if hasattr(ball, 'life_points'):
@@ -71,6 +78,9 @@ class LessLifeEffect(ReduceOrAddEffect):
     """
         Representa el efecto encargado de restar puntos de vida a la pelota
     """
+
+    image = IMAGES_PATH + "lesslife.png"
+
     def apply_over(self, ball):
         if hasattr(ball, 'life_points'):
             ball.life_points -= self.proportion
@@ -83,6 +93,9 @@ class MoreScorePointsEffect(ReduceOrAddEffect):
     """
         Representa la case encargada de sumar valor al puntaje de la bola
     """
+
+    image = IMAGES_PATH + "morescore.png"
+
     def apply_over(self, ball):
         if hasattr(ball, 'score'):
             ball.score += self.proportion
@@ -97,6 +110,9 @@ class LessScorePointsEffect(ReduceOrAddEffect):
     """
         Representa la clase encargada de restar valor al puntaje de la bola
     """
+
+    image = IMAGES_PATH + "lessscore.png"
+
     def apply_over(self, ball):
         if hasattr(ball, 'score'):
             ball.score -= self.proportion
@@ -104,5 +120,44 @@ class LessScorePointsEffect(ReduceOrAddEffect):
             raise AttributeError("La bola no tiene puntaje we u.u")
 
 # fin clase LessScorePointsEffect
+
+
+# definicion clase MoreSpeedEffect
+class MoreSpeedEffect(ReduceOrAddEffect):
+    """
+        Clase encargada de aumentar el valor de la velocidad en la pelota
+    """
+
+    image = IMAGES_PATH + "morespeed.png"
+
+    def __init__(self, proportion=3):
+        super().__init__(proportion)
+
+    def apply_over(self, ball):
+        if hasattr(ball, 'speed'):
+            ball.speed += self.proportion
+        else:
+            raise AttributeError("La bola no tiene atributo velocidad")
+
+# fin clase MoreSpeedEffect
+
+
+# definicion clase LessSpeedEffect
+class LessSpeedEffect(ReduceOrAddEffect):
+    """
+        clase encargada de reducir el valor de la velocidad de la bola
+    """
+
+    image = IMAGES_PATH + "lessspeed.png"
+
+    def __init__(self, proportion=3):
+        super().__init__(proportion)
+
+    def apply_over(self, ball):
+        if hasattr(ball, 'speed'):
+
+            ball.speed -= self.proportion
+        else:
+            raise AttributeError("La bola no tiene atributo velocidad")
 
 

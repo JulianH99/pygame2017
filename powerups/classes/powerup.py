@@ -16,7 +16,7 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.effect = effect
         pygame.sprite.Sprite.__init__(self)
-        self.y_limit = limits[1] - 100
+        self.y_limit = limits[1]
         self.x_limit = limits[0]        
 
         self.image = pygame.image.load(effect.image).convert()

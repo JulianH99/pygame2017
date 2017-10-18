@@ -10,9 +10,11 @@ def main():
     imagenFondo = image.load("Imagenes/fondo.jpg")
     init()
     ventana = display.set_mode([ancho, alto])
-    escenario = Escenario(4,2, "Imagenes/fondo.jpg", 0, ventana, ancho, alto)
-
+    escenario = Escenario(1,1, "Imagenes/fondo.jpg", 0, ventana, ancho, alto)
+    print(escenario.velocidad)
+    reloj = time.Clock()
     while True:
+        reloj.tick(15)  # frames
         tiempo = int(time.get_ticks() / 1000)
 
         ventana.blit(imagenFondo, (0, 0))
@@ -26,6 +28,7 @@ def main():
                 s.exit()
         escenario.generarObstaculos(21,tiempo)
         escenario.movimientoObstaculos()
+        escenario.removerObstaculo()
         display.update()
 
 

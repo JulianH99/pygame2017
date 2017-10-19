@@ -1,10 +1,9 @@
 import pygame
 from pygame.locals import *
-from powerups.classes.Powerup_generator import PowerupGenerator, POWERUP_INTERVAL
+from classes.Powerup_generator import PowerupGenerator, POWERUP_INTERVAL
+from classes.ball import Ball
 
-from powerups.classes.ball import Ball
-from powerups.classes.powerup import PowerUp
-from powerups.classes.effects import MoreScorePointsEffect
+
 
 # dimensiones de la ventana
 WIDTH = 800

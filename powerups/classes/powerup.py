@@ -6,7 +6,7 @@ class PowerUp(pygame.sprite.Sprite):
         La clase PowerUp representa las mejoras o fallas que puede experimentar la pelota
     """
 
-    x_speed = -5
+    __x_speed = -5
 
     def __init__(self, effect, limits):
         """
@@ -14,16 +14,15 @@ class PowerUp(pygame.sprite.Sprite):
             type(obj) : tipo del powerUp
         """
 
-        self.effect = effect
+        self.__effect = effect
         pygame.sprite.Sprite.__init__(self)
-        self.y_limit = limits[1]
-        self.x_limit = limits[0]        
+        self.__y_limit = limits[1]
+        self.__x_limit = limits[0]
 
-        self.image = pygame.image.load(effect.image).convert()
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
-        self.rect.center = (self.x_limit, self.y_limit)
-
+        self.__image = pygame.image.load(effect.image).convert()
+        self.__image.set_colorkey((255, 255, 255))
+        self.__rect = self.__image.get_rect()
+        self.__rect.center = (self.__x_limit, self.__y_limit)
 
     def execute(self, ball):
         """
@@ -32,7 +31,7 @@ class PowerUp(pygame.sprite.Sprite):
         :param ball: objeto de tipo Ball que es tocado por el powerUp
         :return:
         """
-        self.effect.apply_over(ball)
+        self.__effect.apply_over(ball)
 
     def disappear(self):
         """
@@ -42,7 +41,16 @@ class PowerUp(pygame.sprite.Sprite):
         :return:
         """
         self.kill()
-        self.rect.center = (-100, -100)
+        self.__rect.center = (-100, -100)
 
     def update(self):
-        self.rect.x += self.x_speed
+        self.__rect.x += self.__x_speed
+
+    @property
+    def image(self):
+        return self.__image
+
+    @property
+    def rect(self):
+        return self.__rect
+

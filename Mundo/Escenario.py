@@ -25,6 +25,7 @@ class Escenario():
         self.alto = alto  # alto de la ventana
         self.velocidadFondo = velocidadFondo  # velocidad del fondo
         self.velocidad = velocidad  # velocidad que tendra el escenario y sus obstaculos
+        self.dirVel = 1 # direccion de la velocidad
         self.fondo = [image.load(rutaFondo),image.load(rutaFondo)]  # imagen del fondo del escenario
         self.orientacion = orientacion  # orientacion del escenario
         self.obstaculos = []  # lista de obstaculos que van apareciendo
@@ -49,7 +50,7 @@ class Escenario():
         self.rectPlataformaA[0].top = 0  # posicion de arriba de la plataforma
         self.rectPlataformaA[1].left = ancho # posicion izquierda de la plataforma
         self.rectPlataformaA[1].top = 0  # posicion de arriba de la plataforma
-
+        self.posX = 0  # posicion donde comienza a crerarse los obstaculos
         self.ventana = ventana  # ventan donde se colocara el escenario
 
         self.__aux1= 0
@@ -61,10 +62,13 @@ class Escenario():
 
         self.tiempo = tiempo
 
+        self.__cambiarOrientacion()
+
         # velocidad varia cada 30 segundos
-        if tiempo!=self.__aux1 and tiempo % 300 == 0:
+        if tiempo != self.__aux1 and tiempo % 300 == 0:
             self.__aux1 = tiempo
-            self.velocidad += 1
+            self.velocidad += (1*self.dirVel)
+
 
         r = randint(20,70)
 
@@ -74,7 +78,7 @@ class Escenario():
             o = randint(0,2)
             arriba = randint(0, 1)
             # creacion laser
-            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.ancho, 311, 10)
+            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, 10)
             listObstaculos.append(laser)
             # creacion muro
             if arriba == 0:
@@ -82,7 +86,7 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            pared = Obstaculo("Imagenes/pared.png", self.ancho, posY, Obstaculo.PARED)
+            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED)
             listObstaculos.append(pared)
             # creacion puas
             if arriba == 0:
@@ -90,7 +94,7 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            puas = Obstaculo("Imagenes/pared.png", self.ancho, posY, Obstaculo.PUAS)
+            puas = Obstaculo("Imagenes/pared.png", self.posX, posY, Obstaculo.PUAS)
             listObstaculos.append(pared)
 
             if self.__verificiacionObstaculos(listObstaculos[o]):
@@ -161,7 +165,8 @@ class Escenario():
 
     # movimiento de los obstaculos
     def movimientoObstaculos(self):
-
+        # veriificaion orientacion movimeinto
+        self.__cambiarOrientacion()
 
         for obstaculo in self.obstaculos:
             if type(obstaculo) is Laser:
@@ -171,14 +176,19 @@ class Escenario():
                 elif self.tiempo%4 == 0:
                     obstaculo.activar(False)
 
-            obstaculo.mover(self.velocidad)
+            obstaculo.mover(self.velocidad*self.dirVel)
             obstaculo.dibujar(self.ventana)
 
     # remover obstaculos fuera de area
     def removerObstaculo(self):
-        for obstaculo in self.obstaculos:
-            if obstaculo.rect.right<0:
-                self.obstaculos.remove(obstaculo)
+        if self.ORIENT_IZQ_DER==self.orientacion:
+            for obstaculo in self.obstaculos:
+                if obstaculo.rect.left > self.ancho:
+                    self.obstaculos.remove(obstaculo)
+        else:
+            for obstaculo in self.obstaculos:
+                if obstaculo.rect.right<0:
+                    self.obstaculos.remove(obstaculo)
 
     # comprobacion de la colision de la bolita con algun obstaculo
     def colisionBolita(self, rect):
@@ -201,50 +211,95 @@ class Escenario():
     # movimeinto del fondo
     def moverFondo(self):
 
-
+        self.__cambiarOrientacion()
         self.__restriccionFondo(self.rect)
         self.__restriccionPlataforma(self.rectPlataforma, self.rectPlataformaA)
 
         # fondo
-        self.rect[0].left -= self.velocidadFondo
-        self.rect[1].left -= self.velocidadFondo
+        self.rect[0].left -= (self.velocidadFondo*self.dirVel)
+        self.rect[1].left -= (self.velocidadFondo*self.dirVel)
 
         # plataformas
-        self.rectPlataforma[1].left -= int(self.velocidad)
-        self.rectPlataforma[0].left -= int(self.velocidad)
-        self.rectPlataformaA[1].left -= int(self.velocidad)
-        self.rectPlataformaA[0].left -= int(self.velocidad)
+        self.rectPlataforma[1].left -= int(self.velocidad*self.dirVel)
+        self.rectPlataforma[0].left -= int(self.velocidad*self.dirVel)
+        self.rectPlataformaA[1].left -= int(self.velocidad*self.dirVel)
+        self.rectPlataformaA[0].left -= int(self.velocidad*self.dirVel)
 
 
 
     # metodo para hacer movimientoinfinito fondo
     def __restriccionFondo(self, fondoRect):
+        # verificacion oreintacion
+        if self.ORIENT_IZQ_DER == self.orientacion:
+            if fondoRect[0].right == self.ancho :
+                fondoRect[1].right = self.velocidadFondo
+            elif fondoRect[1].right == self.ancho:
+                fondoRect[0].right = self.velocidadFondo
+        else:
+            if fondoRect[0].left == -self.velocidadFondo:
+                fondoRect[1].left = self.ancho - self.velocidadFondo
+            elif fondoRect[1].left == -self.velocidadFondo:
+                fondoRect[0].left = self.ancho - self.velocidadFondo
 
-        if fondoRect[0].left == -self.velocidadFondo:
-            fondoRect[1].left = self.ancho-self.velocidadFondo
-        elif fondoRect[1].left == -self.velocidadFondo:
-            fondoRect[0].left = self.ancho-self.velocidadFondo
+
 
     # metodo para hacer movimientoinfinito pltaforma
     def __restriccionPlataforma(self, fondoRect, rect2):
 
-       #print(fondoRect[0].right,"-",fondoRect[1].right)
-        if fondoRect[0].right < 0:
-            # plataforma abajo
-            fondoRect[0].left = int(self.ancho - self.velocidad)
-            fondoRect[1].right = fondoRect[0].left
-            # plataforma arriba
-            rect2[0].left = int(self.ancho - self.velocidad)
-            rect2[1].right = rect2[0].left
+       # verificacion oreintacion
+       if self.ORIENT_IZQ_DER == self.orientacion:
+            if fondoRect[0].left > self.ancho:
+
+                # plataforma abajo
+                fondoRect[0].right = 0
+                fondoRect[1].left = fondoRect[0].right
+                # plataforma arriba
+                rect2[0].right = 0
+                rect2[1].left = rect2[0].right
 
 
-        elif fondoRect[1].right < 0:
-            # plataforma abajo
-            fondoRect[1].left = self.ancho-self.velocidad
-            fondoRect[0].right = fondoRect[1].left
-            # plataforma arriba
-            rect2[1].left = int(self.ancho - self.velocidad)
-            rect2[0].right = rect2[1].left
+            elif fondoRect[1].left > self.ancho:
+                # plataforma abajo
+                fondoRect[1].right = 0
+                fondoRect[0].left = fondoRect[1].right
+                # plataforma arriba
+                rect2[1].left = int(self.ancho - (self.velocidad*self.dirVel))
+                rect2[0].right = rect2[1].left
+                rect2[1].right = 0
+                rect2[0].left = rect2[1].right
+
+       else:
+           if fondoRect[0].right < 0:
+
+               # plataforma abajo
+               fondoRect[0].left = int(self.ancho - (self.velocidad * self.dirVel))
+               fondoRect[1].right = fondoRect[0].left
+               # plataforma arriba
+               rect2[0].left = int(self.ancho - (self.velocidad * self.dirVel))
+               rect2[1].right = rect2[0].left
+
+
+           elif fondoRect[1].right < 0:
+               # plataforma abajo
+               fondoRect[1].left = int(self.ancho - (self.velocidad * self.dirVel))
+               fondoRect[0].right = fondoRect[1].left
+               # plataforma arriba
+               rect2[1].left = int(self.ancho - (self.velocidad * self.dirVel))
+               rect2[0].right = rect2[1].left
+
+
+    # cambair orientacion movimiento
+    def __cambiarOrientacion(self):
+        if self.orientacion == self.ORIENT_IZQ_DER:
+            self.dirVel = -1
+            posX=0
+
+        else:
+            self.dirVel = 1
+            self.posX = self.ancho
+
+
+
 
     def getVelocidad(self):
         return self.velocidad

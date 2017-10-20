@@ -1,16 +1,23 @@
 import sys as s
-from pygame import *
+
 from Obstaculo import *
 from Escenario import *
 from pygame.locals import *
+from Bolita.ClaseBolita import *
+from pygame import *
+
+
 
 def main():
     ancho = 700
     alto = 622
     imagenFondo = image.load("Imagenes/fondo.jpg")
     init()
+
     ventana = display.set_mode([ancho, alto])
     escenario = Escenario(2,1, "Imagenes/fondo.jpg", Escenario.ORIENT_DER_IZQ, ventana, ancho, alto)
+
+    bolita = Bolita(escenario.velocidad,10, alto-escenario.rectPlataforma[0].height)
 
     reloj = time.Clock()
     while True:
@@ -26,7 +33,9 @@ def main():
         ventana.blit(imagenFondo, (0, 0))
         escenario.moverFondo()
         escenario.dibujarFondo(ventana)
-
+        bolita.salto(ventana, escenario.velocidad)
+        bolita.saltoDoble = True
+        print(escenario.colisionBolita(bolita.rectangulo))
 
         for evento in event.get():
             if evento.type == QUIT:

@@ -9,6 +9,7 @@ from Laser import *
 
 
 
+
 # clase escenrario
 class Escenario():
     # constantes
@@ -17,6 +18,8 @@ class Escenario():
     ORIENT_G_NOR = 2
     ORIENT_G_INVER = 3
 
+    def generarPowerups(self):
+        generarPower = PowerupGenerator
 
     # constructor
     def __init__(self, velocidad,velocidadFondo, rutaFondo, orientacion, ventana, ancho, alto):
@@ -192,9 +195,17 @@ class Escenario():
 
     # comprobacion de la colision de la bolita con algun obstaculo
     def colisionBolita(self, rect):
+        if rect.collidelist(self.obstaculos)!=-1:
+            i=rect.collidelist(self.obstaculos)
+            if type(self.obstaculos[i]) is Laser:
+                if self.obstaculos[i].activo:
+                    return self.obstaculos[i].getValorDanio
+                else:
+                    return 0
 
-        i=rect.collidelis(self.obstaculos)
-        return self.obstaculos[i].getValorDanio
+            else:
+                return self.obstaculos[i].getValorDanio
+        return 0
 
     # dibujar fondo infinito
     def dibujarFondo(self, ventana):

@@ -1,7 +1,5 @@
 from pygame import *
-from Bolita import *
-from pygame.locals import *
-import pygame,sys
+from Bolita.ClaseBolita import *
 
 def main():
     pygame.init()
@@ -9,5 +7,5 @@ def main():
 
 mibolita = Bolita(100,0,472)
 
-mibolita.salto(0)
-mibolita.desplazamientoBolita(5)
+mibolita.salto()
+#mibolita.desplazamientoBolita(5)

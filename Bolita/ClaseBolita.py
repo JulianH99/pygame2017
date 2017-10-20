@@ -8,37 +8,50 @@ class Bolita():
     def __init__(self, vidaInicial, posX, posY):
         self.vida = vidaInicial
         self.puntaje = 0
-        self.imagen = pygame.image.load("Imagenes/bolita1.png")
+        self.imagen = pygame.transform.scale(pygame.image.load('Imagenes/bolita1.png'), (70, 70))
         self.rectangulo = self.imagen.get_rect()
+        self.imagenrect = self.imagen.get_rect()
+        self.aceleGrave = 0.3
         self.rectangulo.centerx = posX
         self.rectangulo.centery = posY
         self.gravedad = True
         self.direccionMovimiento = True
-        self.ventana = pygame.display.set_mode((800, 600))
+        self.ancho = 800
+        self.alto = 600
+        self.ventana = pygame.display.set_mode((self.ancho, self.alto),0,32)
 
-    def salto(self, aumento):
+    def salto(self):
+        velocidadVertical = [0, 0]
+        clock = pygame.time.Clock()
         blanco = (255, 255, 255)
-        velocidad = 180
-
 
         while True:
-            self.ventana.fill(blanco)
-            self.ventana.blit(self.imagen, (self.rectangulo.centerx, self.rectangulo.centery))
-            self.Tiempo = pygame.time.get_ticks()
-
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_UP:
-                        self.rectangulo.centery -= velocidad + aumento
+                        velocidadVertical[0] = 0
+                        velocidadVertical[1] = -10
 
-                        #self.rectangulo.centery += velocidad + aumento
-                elif event.type == pygame.KEYUP:
-                    if event.key == K_UP:
-                        print("Tecla arriba presionada")
+            velocidadVertical[0] = self.aceleGrave + velocidadVertical[1]
+            self.rectangulo.centery += velocidadVertical[0]
+            velocidadVertical[1] = velocidadVertical[0]
+
+            if self.rectangulo.centery < 0:
+                self.rectangulo.centery = 0
+                velocidadVertical = [0, 0]
+            if self.rectangulo.centery > (self.alto - self.imagenrect.bottom):
+                self.rectangulo.centery = self.alto - self.imagenrect.bottom
+
+
+            clock.tick(60)
+            self.ventana.fill(blanco)
+            self.ventana.blit(self.imagen, (self.rectangulo.centerx, self.rectangulo.centery))
             pygame.display.update()
+
+
 
     def acumularPuntos(self, puntos):
         self.puntaje += puntos

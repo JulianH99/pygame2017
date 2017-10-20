@@ -1,4 +1,5 @@
-import pygame,sys
+import pygame
+import sys as s
 import time
 from random import randint
 from pygame.locals import *
@@ -18,40 +19,61 @@ class Bolita():
         self.direccionMovimiento = True
         self.ancho = 800
         self.alto = 600
-        self.ventana = pygame.display.set_mode((self.ancho, self.alto),0,32)
+        self.velocidadVertical = [0, 0]
+        self.saltoDoble = False
 
-    def salto(self):
-        velocidadVertical = [0, 0]
-        clock = pygame.time.Clock()
-        blanco = (255, 255, 255)
 
-        while True:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN:
+    def salto(self,ventana,velocidad):
+
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if self.saltoDoble:
                     if event.key == K_UP:
-                        velocidadVertical[0] = 0
-                        velocidadVertical[1] = -10
-
-            velocidadVertical[0] = self.aceleGrave + velocidadVertical[1]
-            self.rectangulo.centery += velocidadVertical[0]
-            velocidadVertical[1] = velocidadVertical[0]
-
-            if self.rectangulo.centery < 0:
-                self.rectangulo.centery = 0
-                velocidadVertical = [0, 0]
-            if self.rectangulo.centery > (self.alto - self.imagenrect.bottom):
-                self.rectangulo.centery = self.alto - self.imagenrect.bottom
+                        self.velocidadVertical[0] = 0
+                        self.velocidadVertical[1] = -10
+                    elif event.key == K_LEFT:
+                        self.rectangulo.centerx -= velocidad
+                    elif event.key == K_RIGHT:
+                        self.rectangulo.centerx += velocidad
 
 
-            clock.tick(60)
-            self.ventana.fill(blanco)
-            self.ventana.blit(self.imagen, (self.rectangulo.centerx, self.rectangulo.centery))
-            pygame.display.update()
+                else:
+                    if self.rectangulo.centery==self.alto-self.rectangulo.width:
+
+                        if event.key == K_UP:
+                            self.velocidadVertical[0] = 0
+                            self.velocidadVertical[1] = -10
+                        elif event.key == K_LEFT:
+                            self.rectangulo.centerx -= velocidad
+                        elif event.key == K_RIGHT:
+                            self.rectangulo.centerx += velocidad
+
+                    else:
+                        if event.key == K_LEFT:
+                            self.rectangulo.centerx -= velocidad
+                        elif event.key == K_RIGHT:
+                            self.rectangulo.centerx += velocidad
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                s.exit()
 
 
+        print(self.rectangulo.centery)
+
+
+        self.velocidadVertical[0] = self.aceleGrave + self.velocidadVertical[1]
+        self.rectangulo.centery += self.velocidadVertical[0]
+        self.velocidadVertical[1] = self.velocidadVertical[0]
+
+        if self.rectangulo.centery < 0:
+            self.rectangulo.centery = 0
+            velocidadVertical = [0, 0]
+        if self.rectangulo.centery > (self.alto - self.imagenrect.bottom):
+            self.rectangulo.centery = self.alto - self.imagenrect.bottom
+
+        ventana.blit(self.imagen, (self.rectangulo.centerx, self.rectangulo.centery))
 
     def acumularPuntos(self, puntos):
         self.puntaje += puntos
@@ -68,29 +90,13 @@ class Bolita():
         self.vida += cambioVida
 
     def desplazamientoBolita(self, velocidad):
+        pass
+
+    def activarSaltoDoble(self, estado):
+        self.saltoDoble=estado
 
 
-        blanco = (255, 255, 255)
 
-        while True:
-            self.ventana.fill(blanco)
-            self.ventana.blit(self.imagen,(self.rectangulo.centerx, self.rectangulo.centery))
-
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == K_LEFT:
-                        self.rectangulo.centerx -= velocidad
-                    elif event.key == K_RIGHT:
-                        self.rectangulo.centerx += velocidad
-                elif event.type == pygame.KEYUP:
-                    if event.key == K_RIGHT:
-                        print("Tecla derecha presionada")
-                    elif event.key == K_LEFT:
-                        print("Tecla izquierda presionada")
-            pygame.display.update()
 
     def obtenerRectangulo(self):
         return self.rectangulo

@@ -37,3 +37,28 @@ class Ball(pygame.sprite.Sprite):
     def rect(self):
         return self.__rect
 
+    @property
+    def speed(self):
+        return self.__speed
+
+    @speed.setter
+    def speed(self, value):
+        self.__speed = value
+
+    @property
+    def life_points(self):
+        return self.__life_points
+
+    @life_points.setter
+    def life_points(self, value):
+        self.__life_points = value
+
+    @property
+    def score(self):
+        return self.__score
+
+    @score.setter
+    def score(self, value):
+        self.__score = value
+
+

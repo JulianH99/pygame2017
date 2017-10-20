@@ -5,6 +5,8 @@ from abc import ABCMeta, abstractmethod
 
 IMAGES_PATH = "./img/"
 
+EFFECT_DURATION = 5 * 1000
+
 
 # definicion de la clase Effect
 class Effect:

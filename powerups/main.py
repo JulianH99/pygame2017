@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from classes.Powerup_generator import PowerupGenerator, POWERUP_INTERVAL
 from classes.ball import Ball
+from classes.effects import EFFECT_DURATION
 
 
 
@@ -38,6 +39,11 @@ sprite_group.add(ball)
 
 clock = pygame.time.Clock()
 
+# configuracion para la duracion del efecto
+
+effect_reset_ready = 0
+dt = clock.tick()
+
 
 def main():
     running = True
@@ -51,6 +57,7 @@ def main():
                 power_up = powerup_generator.generate()
                 sprite_group.add(power_up)
 
+
         # update sprites
         sprite_group.update()
 
@@ -62,13 +69,12 @@ def main():
                 sprite_group.remove(power_up)
                 print("Puntos de vida aumentados: {0}".format(ball.life_points))
 
+
         screen.fill((0, 0, 0))
 
         sprite_group.draw(screen)
     
         pygame.display.flip()
-
-
 
 
 if __name__ == '__main__':

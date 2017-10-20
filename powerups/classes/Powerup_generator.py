@@ -2,6 +2,7 @@
 
 from powerups.classes.effects import *
 from powerups.classes.powerup import PowerUp
+from pygame import time
 import random
 
 POWERUP_INTERVAL = 7 * 1000  # intervalo en milisegundos
@@ -24,3 +25,7 @@ class PowerupGenerator:
 
         power_up = PowerUp(random.choice(self.__effects_list)(), (pos_x, pos_y))
         return power_up
+
+
+
+

@@ -46,6 +46,9 @@ class PowerUp(pygame.sprite.Sprite):
     def update(self):
         self.__rect.x += self.__x_speed
 
+        if self.rect.x < -10:
+            self.disappear()
+
     @property
     def image(self):
         return self.__image
@@ -53,4 +56,8 @@ class PowerUp(pygame.sprite.Sprite):
     @property
     def rect(self):
         return self.__rect
+
+    @property
+    def effect(self):
+        return self.__effect
 

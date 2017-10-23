@@ -19,9 +19,9 @@ class Laser(Obstaculo):
     def activar(self, estado):
         self.activo = estado
         if self.activo:
-            self.imagen = image.load(self.ruta2)
-        else:
             self.imagen = image.load(self.ruta1)
+        else:
+            self.imagen = image.load(self.ruta2)
 
 
 

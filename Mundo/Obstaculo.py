@@ -24,4 +24,4 @@ class Obstaculo():
 
     # obtenemos el valor de año del obstaculo
     def getValorDanio(self):
-        return self.valorDanio
+        return int(self.valorDanio)

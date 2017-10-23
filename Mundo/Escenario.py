@@ -5,7 +5,7 @@ from pygame.locals import *
 from random import randint
 from Obstaculo import *
 from Laser import *
-from PIL import Image, ImageChops, ImageEnhance, ImageOps
+
 
 
 
@@ -173,10 +173,10 @@ class Escenario():
 
         for obstaculo in self.obstaculos:
             if type(obstaculo) is Laser:
-                if self.tiempo%3 == 0:
+                if self.tiempo%15 == 0:
                     obstaculo.activar(True)
 
-                elif self.tiempo%4 == 0:
+                elif self.tiempo%3 == 0:
                     obstaculo.activar(False)
 
             obstaculo.mover(self.velocidad*self.dirVel)
@@ -199,12 +199,13 @@ class Escenario():
             i=rect.collidelist(self.obstaculos)
             if type(self.obstaculos[i]) is Laser:
                 if self.obstaculos[i].activo:
-                    return self.obstaculos[i].getValorDanio
+                    return self.obstaculos[i].getValorDanio()
                 else:
                     return 0
 
             else:
-                return self.obstaculos[i].getValorDanio
+                return self.obstaculos[i].getValorDanio()
+
         return 0
 
     # dibujar fondo infinito

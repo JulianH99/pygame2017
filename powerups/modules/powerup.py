@@ -1,4 +1,5 @@
 import pygame
+from modules.effects import reset_event_ins
 
 
 class PowerUp(pygame.sprite.Sprite):
@@ -49,6 +50,19 @@ class PowerUp(pygame.sprite.Sprite):
         if self.rect.x < -10:
             self.disappear()
 
+    def check_collide(self, ball):
+        if self.__rect.colliderect(ball.rect):
+            self.execute(ball)
+            self.disappear()
+            self.__trigger_effect_countdown()
+            return True
+        else:
+            return False
+
+    def __trigger_effect_countdown(self):
+        self.__effect.triggered = True
+        pygame.event.post(reset_event_ins)
+
     @property
     def image(self):
         return self.__image
@@ -60,4 +74,3 @@ class PowerUp(pygame.sprite.Sprite):
     @property
     def effect(self):
         return self.__effect
-

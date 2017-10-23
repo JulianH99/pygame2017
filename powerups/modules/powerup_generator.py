@@ -1,11 +1,10 @@
 # definicion de la clase powerup generator
 
-from powerups.classes.effects import *
-from powerups.classes.powerup import PowerUp
-from pygame import time
+from powerups.modules.effects import *
+from powerups.modules.powerup import PowerUp
 import random
 
-POWERUP_INTERVAL = 7 * 1000  # intervalo en milisegundos
+POWERUP_INTERVAL = 10 * 1000  # intervalo en milisegundos
 
 
 class PowerupGenerator:
@@ -15,7 +14,8 @@ class PowerupGenerator:
                                LessScorePointsEffect,
                                LessLifeEffect,
                                MoreSpeedEffect,
-                               LessSpeedEffect]
+                               LessSpeedEffect,
+                               ChangeStageDirectionEffect]
         self.__scr_width = scr_width + 100
         self.__scr_heigth = scr_heigth - 100
 

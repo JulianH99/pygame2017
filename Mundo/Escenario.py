@@ -1,11 +1,13 @@
 import sys as s
-
 from math import floor
 from pygame import *
 from pygame.locals import *
 from random import randint
 from Obstaculo import *
 from Laser import *
+from PIL import Image, ImageChops, ImageEnhance, ImageOps
+
+
 
 
 
@@ -18,18 +20,16 @@ class Escenario():
     ORIENT_G_NOR = 2
     ORIENT_G_INVER = 3
 
-    def generarPowerups(self):
-        generarPower = PowerupGenerator
 
     # constructor
-    def __init__(self, velocidad,velocidadFondo, rutaFondo, orientacion, ventana, ancho, alto):
+    def __init__(self, velocidad,velocidadFondo, orientacion, ventana, ancho, alto):
         # atributos
         self.ancho = ancho  # ancho de la ventana
         self.alto = alto  # alto de la ventana
         self.velocidadFondo = velocidadFondo  # velocidad del fondo
         self.velocidad = velocidad  # velocidad que tendra el escenario y sus obstaculos
         self.dirVel = 1 # direccion de la velocidad
-        self.fondo = [image.load(rutaFondo),image.load(rutaFondo)]  # imagen del fondo del escenario
+        self.fondo = [image.load("Imagenes/fondoMovil1.png"),image.load("Imagenes/fondoMovil1.png")]  # imagen del fondo del escenario
         self.orientacion = orientacion  # orientacion del escenario
         self.obstaculos = []  # lista de obstaculos que van apareciendo
         self.rect = [self.fondo[0].get_rect(),self.fondo[1].get_rect()]  # obtencion de un retcnagulo del fondo
@@ -39,15 +39,15 @@ class Escenario():
         self.rect[1].top = 0  # posicion de arriba del fondo
 
         # elementos plataforma abajo
-        self.plataforma = [image.load("Imagenes/plataforma.png"),image.load("Imagenes/plataforma2.png")]
+        self.plataforma = [image.load("Imagenes/plataformaA.png"),image.load("Imagenes/plataformaA.png")]
         self.rectPlataforma = [self.plataforma[0].get_rect(),self.plataforma[1].get_rect()]
         self.rectPlataforma[0].left = 0  # posicion izquierda de la plataforma
-        self.rectPlataforma[0].bottom = alto  # posicion de arriba de la plataforma
+        self.rectPlataforma[0].bottom = alto-50  # posicion de arriba de la plataforma
         self.rectPlataforma[1].left = ancho  # posicion izquierda de la plataforma
-        self.rectPlataforma[1].bottom = alto  # posicion de arriba de la plataforma
+        self.rectPlataforma[1].bottom = alto-50 # posicion de arriba de la plataforma
 
         # elementos plataforma arriba
-        self.plataformaA = [image.load("Imagenes/plataforma.png"), image.load("Imagenes/plataforma2.png")]
+        self.plataformaA = [image.load("Imagenes/plataforma.png"), image.load("Imagenes/plataforma.png")]
         self.rectPlataformaA = [self.plataformaA[0].get_rect(), self.plataformaA[1].get_rect()]
         self.rectPlataformaA[0].left = 0  # posicion izquierda del plataforma
         self.rectPlataformaA[0].top = 0  # posicion de arriba de la plataforma
@@ -303,11 +303,12 @@ class Escenario():
     def __cambiarOrientacion(self):
         if self.orientacion == self.ORIENT_IZQ_DER:
             self.dirVel = -1
-            posX=0
+            self.posX=0
 
         else:
             self.dirVel = 1
             self.posX = self.ancho
+
 
 
 

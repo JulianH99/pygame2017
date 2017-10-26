@@ -24,6 +24,7 @@ class Bolita():
         self.tamanoPlat = tamanoPlat
         self.velocidadVertical = [0, 0]
         self.saltoDoble = False
+        self.saltos = 0
 
 
     #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
@@ -31,13 +32,13 @@ class Bolita():
         # Algoritmo salto doble
         if self.saltoDoble:
 
-            saltos = 0
-            while saltos <= 1:
-                if tecla == K_UP:
-                 self.velocidadVertical[0] = 0
-                 self.velocidadVertical[1] = -10
-
-                saltos = saltos + 1
+            if self.saltos<1:
+                 if tecla == K_UP:
+                  self.velocidadVertical[0] = 0
+                  self.velocidadVertical[1] = -10
+                  self.saltos = self.saltos + 1
+            if self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlat + 10 - .5:
+                self.saltos = 0
 
             if tecla == K_LEFT:
                 self.rectangulo.centerx -= velocidad

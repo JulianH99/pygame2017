@@ -25,41 +25,34 @@ class Bolita():
         self.saltoDoble = False
 
 
-    def salto(self,ventana,velocidad):
+    def salto(self,velocidad,tecla):
+        if self.saltoDoble:
+            if tecla == K_UP:
+                self.velocidadVertical[0] = 0
+                self.velocidadVertical[1] = -10
+            elif tecla == K_LEFT:
+                self.rectangulo.centerx -= velocidad
+            elif tecla == K_RIGHT:
+                self.rectangulo.centerx += velocidad
 
 
+        else:
+            if self.rectangulo.centery == self.alto - self.rectangulo.width:
+                if tecla == K_UP:
+                    self.velocidadVertical[0] = 0
+                    self.velocidadVertical[1] = -10
+                elif tecla == K_LEFT:
+                    self.rectangulo.centerx -= velocidad
+                elif tecla == K_RIGHT:
+                    self.rectangulo.centerx += velocidad
 
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if self.saltoDoble:
-                    if event.key == K_UP:
-                        self.velocidadVertical[0] = 0
-                        self.velocidadVertical[1] = -10
-                    elif event.key == K_LEFT:
-                        self.rectangulo.centerx -= velocidad
-                    elif event.key == K_RIGHT:
-                        self.rectangulo.centerx += velocidad
+            else:
+                if tecla == K_LEFT:
+                    self.rectangulo.centerx -= velocidad
+                elif tecla == K_RIGHT:
+                    self.rectangulo.centerx += velocidad
 
 
-                else:
-                    if self.rectangulo.centery==self.alto-self.rectangulo.width:
-
-                        if event.key == K_UP:
-                            self.velocidadVertical[0] = 0
-                            self.velocidadVertical[1] = -10
-                        elif event.key == K_LEFT:
-                            self.rectangulo.centerx -= velocidad
-                        elif event.key == K_RIGHT:
-                            self.rectangulo.centerx += velocidad
-
-                    else:
-                        if event.key == K_LEFT:
-                            self.rectangulo.centerx -= velocidad
-                        elif event.key == K_RIGHT:
-                            self.rectangulo.centerx += velocidad
-            elif event.type == pygame.QUIT:
-                pygame.quit()
-                s.exit()
 
 
 
@@ -71,10 +64,13 @@ class Bolita():
 
         if self.rectangulo.centery < self.piso:
             self.rectangulo.centery = self.piso
-            velocidadVertical = [0, 0]
+            self.velocidadVertical = [0, 0]
         if self.rectangulo.centery > (self.alto - self.imagenrect.bottom):
             self.rectangulo.centery = self.alto - self.imagenrect.bottom
 
+
+
+    def dibujarBolita(self,ventana):
         ventana.blit(self.imagen, (self.rectangulo.centerx, self.rectangulo.centery))
 
     def acumularPuntos(self, puntos):
@@ -105,6 +101,7 @@ class Bolita():
 
     def restriccionMovimiento(self):
         pass
+
 
 
 

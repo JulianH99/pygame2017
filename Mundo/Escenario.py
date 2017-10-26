@@ -310,19 +310,32 @@ class Escenario():
             self.dirVel = 1
             self.posX = self.ancho
 
+    # colocar danio en 0
+    def sinDanio(self):
+        for obstaculo in self.obstaculos:
+            self.obstaculos.sinDanio()
 
+    # restablecer danio
+    def restablecerDanio(self):
+        for obstaculo in self.obstaculos:
+            self.obstaculos.restablecerDanio()
 
-
-
+    # obtener valor velocidad
     def getVelocidad(self):
         return self.velocidad
+
+    # colocar valor velocidad
     def setVeolcidad(self, velocidad):
         self.velocidad = velocidad
 
+    # obtenerOrientacion
     def getOrientacion(self):
         return self.velocidad
+
+    # colocarOrientacion
     def setOrientacion(self, orientacion):
         self.orientacion = orientacion
+
 
 
 

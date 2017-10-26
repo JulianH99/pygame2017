@@ -42,7 +42,7 @@ def main():
     escenario = Escenario(2,1, Escenario.ORIENT_DER_IZQ, ventana, ancho, alto)
 
     # bolita
-    bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2)
+    bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
     reloj = time.Clock()
     while True:
 

@@ -4,9 +4,10 @@ import time
 from random import randint
 from pygame.locals import *
 
-
+#Clase Bolita
 class Bolita():
-    def __init__(self, vidaInicial, posX, posY, ancho, alto, tamanoPlat):
+    #Metodo Constructor
+    def __init__(self, vidaInicial, posX, posY, ancho, alto, tamanoPlat, techo):
         self.vida = vidaInicial
         self.puntaje = 0
         self.imagen = pygame.transform.scale(pygame.image.load('Imagenes/bolita1.png'), (70, 70))
@@ -19,25 +20,34 @@ class Bolita():
         self.direccionMovimiento = True
         self.ancho = ancho
         self.alto = alto
-        self.techo =0
+        self.techo = techo
         self.tamanoPlat = tamanoPlat
         self.velocidadVertical = [0, 0]
         self.saltoDoble = False
 
 
+    #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
     def salto(self,velocidad,tecla):
+        # Algoritmo salto doble
         if self.saltoDoble:
-            if tecla == K_UP:
-                self.velocidadVertical[0] = 0
-                self.velocidadVertical[1] = -10
-            elif tecla == K_LEFT:
+
+            saltos = 0
+            while saltos <= 1:
+                if tecla == K_UP:
+                 self.velocidadVertical[0] = 0
+                 self.velocidadVertical[1] = -10
+
+                saltos = saltos + 1
+
+            if tecla == K_LEFT:
                 self.rectangulo.centerx -= velocidad
             elif tecla == K_RIGHT:
                 self.rectangulo.centerx += velocidad
 
-
+        # Algoritmo salto simple
         else:
-            if self.rectangulo.centery == self.alto - self.rectangulo.width:
+
+            if self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlat + 10 - .5:
                 if tecla == K_UP:
                     self.velocidadVertical[0] = 0
                     self.velocidadVertical[1] = -10
@@ -66,33 +76,37 @@ class Bolita():
         self.restriccionMovimiento()
 
 
-
+    #Metodo para dibujar la bolita
     def dibujarBolita(self,ventana):
         ventana.blit(self.imagen, (self.rectangulo.left, self.rectangulo.centery))
 
+    #Se van guardando los puntos de la bolita
     def acumularPuntos(self, puntos):
         self.puntaje += puntos
-
+    #Se obtiene el puntaje de la bolita
     def obtenerPuntos(self):
 
         return self.puntaje
 
+    #Se obtiene la vida de la bolita
     def obtenerVida(self):
 
         return self.vida
-
+    #Se modifica la vida de la bolita según los obstáculos y powerUps
+    #Se determina si la bolita tiene vida o no
     def modificarVida(self, cambioVida):
         self.vida += cambioVida
 
-
+    #Metodo para el doble salto
     def activarSaltoDoble(self, estado):
         self.saltoDoble=estado
 
 
-
+    #Metodo para obtener el rectangulo
     def obtenerRectangulo(self):
         return self.rectangulo
 
+    #Se restringe el movimiento que debe hacer la bolita
     def restriccionMovimiento(self):
 
         if self.rectangulo.centery < self.techo:
@@ -106,4 +120,3 @@ class Bolita():
 
         if self.rectangulo.left < 0:
             self.rectangulo.left = 0
-

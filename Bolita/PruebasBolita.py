@@ -17,7 +17,7 @@ def main():
 
 
         mibolita.salto(ventana,5)
-        mibolita.saltoDoble= True
+        mibolita.saltoDoble= False
 
         pygame.display.update()
 

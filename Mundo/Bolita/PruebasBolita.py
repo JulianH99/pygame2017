@@ -6,7 +6,7 @@ def main():
     pygame.init()
 
 
-    mibolita = Bolita(100, 0, 472)
+    mibolita = Bolita(100, 0, 472, 300, 100)
     ventana = display.set_mode([mibolita.ancho,mibolita.alto])
     pygame.display.set_caption("Programa Bolita")
     blanco = (255, 255, 255)

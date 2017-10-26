@@ -3,7 +3,7 @@ from pygame import *
 from pygame.locals import *
 
 class Obstaculo():
-    PARED = 0
+    PARED = -2
     PUAS = -1
 
     # constructor
@@ -11,7 +11,7 @@ class Obstaculo():
 
         self.imagen = image.load(ruta)  # imagen que representa el obstaculo
         self.rect = self.imagen.get_rect()  # rectangulo creado apartir de la iamgen del obstaculo
-        self.valorDanio = danio  # daño que hace el obstaculo si daño vale 0 es una pared si es -1 es un chuzo
+        self.valorDanio = danio  # daño que hace el obstaculo si daño vale -2 es una pared si es -1 es un chuzo
         self.valorDanioAux = danio
         self.rect.centerx = X  # centro en x del obstaculo
         self.rect.centery = Y  # centro en y del obstaculo

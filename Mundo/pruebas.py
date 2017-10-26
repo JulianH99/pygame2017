@@ -33,6 +33,7 @@ alto = 600
 def main():
 
     imagenFondo = image.load("Imagenes/fondoEstatico1.png")
+
     init()
 
     ventana = display.set_mode([ancho, alto])
@@ -41,7 +42,7 @@ def main():
     escenario = Escenario(2,1, Escenario.ORIENT_DER_IZQ, ventana, ancho, alto)
 
     # bolita
-    bolita = Bolita(10,10, alto-escenario.rectPlataforma[0].height)
+    bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2)
     reloj = time.Clock()
     while True:
 

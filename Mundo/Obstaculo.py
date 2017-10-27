@@ -7,7 +7,7 @@ class Obstaculo():
     PUAS = -1
 
     # constructor
-    def __init__(self, ruta, X, Y, danio):
+    def __init__(self, ruta, X, Y, danio, sonido):
 
         self.imagen = image.load(ruta)  # imagen que representa el obstaculo
         self.rect = self.imagen.get_rect()  # rectangulo creado apartir de la iamgen del obstaculo
@@ -15,6 +15,7 @@ class Obstaculo():
         self.valorDanioAux = danio
         self.rect.centerx = X  # centro en x del obstaculo
         self.rect.centery = Y  # centro en y del obstaculo
+        self.sonido = mixer.Sound(sonido)  # cargar sonido
 
 
     # mueve el obstaculo dependiendo de la velocidad

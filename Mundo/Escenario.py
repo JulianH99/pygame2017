@@ -89,7 +89,7 @@ class Escenario():
             o = randint(0,2)
             arriba = randint(0, 1)
             # creacion laser
-            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, 10)
+            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, 10, "Sonidos/laser.wav")
             listObstaculos.append(laser)
             # creacion muro
             if arriba == 0:
@@ -97,7 +97,7 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED)
+            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED, "Sonidos/shoot.wav")
             listObstaculos.append(pared)
             # creacion puas
             if arriba == 0:
@@ -105,7 +105,7 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            puas = Obstaculo("Imagenes/pared.png", self.posX, posY, Obstaculo.PUAS)
+            puas = Obstaculo("Imagenes/pared.png", self.posX, posY, Obstaculo.PUAS,"Sonidos/shoot.wav")
             listObstaculos.append(pared)
 
             if self.__verificiacionObstaculos(listObstaculos[o]):
@@ -208,15 +208,18 @@ class Escenario():
             if type(self.obstaculos[i]) is not Laser:
                 self.cambiarFondo(self.FONDOS['OBSTACULO'])
 
+
             if type(self.obstaculos[i]) is Laser:
                 if self.obstaculos[i].activo:
                     self.cambiarFondo(self.FONDOS['OBSTACULO'])
+                    self.obstaculos[i].sonido.play()
                     return self.obstaculos[i].getValorDanio()
                 else:
                     self.cambiarFondo(self.FONDOS['NORMAL'])
                     return 0
 
             else:
+                self.obstaculos[i].sonido.play()
                 return self.obstaculos[i].getValorDanio()
         else: self.cambiarFondo(self.FONDOS['NORMAL'])
 

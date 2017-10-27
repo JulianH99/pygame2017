@@ -19,7 +19,13 @@ class Escenario():
     ORIENT_DER_IZQ = 1
     ORIENT_G_NOR = 2
     ORIENT_G_INVER = 3
-
+    FONDOS={'NORMAL': image.load("Imagenes/fondoMovil1.png"),
+            'OBSTACULO': image.load("Imagenes/fondoObstaculo.png"),
+            'POWERUP_BUENO': image.load("Imagenes/fondoPowerupBueno.png"),
+            'POWERUP_MALO': image.load("Imagenes/fondoPowerupMalo.png"),
+            'AUMENTO_VELOCIDAD': image.load("Imagenes/fondoVelocidad.png"),
+            'PUNTAJE': image.load("Imagenes/fondoPuntaje.png")
+            }
 
     # constructor
     def __init__(self, velocidad,velocidadFondo, orientacion, ventana, ancho, alto):
@@ -29,7 +35,7 @@ class Escenario():
         self.velocidadFondo = velocidadFondo  # velocidad del fondo
         self.velocidad = velocidad  # velocidad que tendra el escenario y sus obstaculos
         self.dirVel = 1 # direccion de la velocidad
-        self.fondo = [image.load("Imagenes/fondoMovil1.png"),image.load("Imagenes/fondoMovil1.png")]  # imagen del fondo del escenario
+        self.fondo = [self.FONDOS['NORMAL'],self.FONDOS['NORMAL']]  # imagen del fondo del escenario
         self.orientacion = orientacion  # orientacion del escenario
         self.obstaculos = []  # lista de obstaculos que van apareciendo
         self.rect = [self.fondo[0].get_rect(),self.fondo[1].get_rect()]  # obtencion de un retcnagulo del fondo
@@ -58,6 +64,7 @@ class Escenario():
 
         self.__aux1= 0
         self.__aux2 = 0
+        self.__auxTiempoFondo = 0
 
     # generador aleatorio de obstaculos
     def generarObstaculos(self, puntaje, tiempo):
@@ -71,6 +78,7 @@ class Escenario():
         if tiempo != self.__aux1 and tiempo % 300 == 0:
             self.__aux1 = tiempo
             self.velocidad += (1*self.dirVel)
+            self.cambiarFondo(self.FONDOS['AUMENTO_VELOCIDAD'])
 
 
         r = randint(20,70)
@@ -196,15 +204,21 @@ class Escenario():
     # comprobacion de la colision de la bolita con algun obstaculo
     def colisionBolita(self, rect):
         if rect.collidelist(self.obstaculos)!=-1:
-            i=rect.collidelist(self.obstaculos)
+            i = rect.collidelist(self.obstaculos)
+            if type(self.obstaculos[i]) is not Laser:
+                self.cambiarFondo(self.FONDOS['OBSTACULO'])
+
             if type(self.obstaculos[i]) is Laser:
                 if self.obstaculos[i].activo:
+                    self.cambiarFondo(self.FONDOS['OBSTACULO'])
                     return self.obstaculos[i].getValorDanio()
                 else:
+                    self.cambiarFondo(self.FONDOS['NORMAL'])
                     return 0
 
             else:
                 return self.obstaculos[i].getValorDanio()
+        else: self.cambiarFondo(self.FONDOS['NORMAL'])
 
         return 0
 
@@ -309,6 +323,15 @@ class Escenario():
         else:
             self.dirVel = 1
             self.posX = self.ancho
+
+    # cambiar fondo
+    def cambiarFondo(self,fondo):
+        self.fondo[0]=fondo
+        self.fondo[1]=fondo
+
+
+
+
 
     # colocar danio en 0
     def sinDanio(self):

@@ -76,6 +76,7 @@ def main():
         # bolita
         bolita.salto(escenario.velocidad + 10, None)
         bolita.dibujarBolita(ventana)
+        bolita.invertirDireccion = True
         bolita.saltoDoble = True
         # powerup
         sprite_group.update()

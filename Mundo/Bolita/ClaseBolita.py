@@ -17,20 +17,21 @@ class Bolita():
         self.rectangulo.left = posX
         self.rectangulo.centery = posY
         self.gravedad = True
-        self.direccionMovimiento = True
         self.ancho = ancho
         self.alto = alto
         self.techo = techo
         self.tamanoPlat = tamanoPlat
         self.velocidadVertical = [0, 0]
         self.saltoDoble = False
+        self.invertirDireccion = False
         self.saltos =0
 
     #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
     def salto(self,velocidad,tecla):
+
+
         # Algoritmo salto doble
         if self.saltoDoble:
-
 
             if self.saltos<1:
                 if tecla == K_UP:
@@ -66,46 +67,67 @@ class Bolita():
 
 
 
-
-
-
         self.velocidadVertical[0] = self.aceleGrave + self.velocidadVertical[1]
         self.rectangulo.centery += self.velocidadVertical[0]
         self.velocidadVertical[1] = self.velocidadVertical[0]
 
 
+        #Ubica la bolita deacuerdo a si se invierte la direccion o no
+        if self.invertirDireccion == True:
+
+            self.rectangulo.left = self.ancho
+
+
+        elif self.invertirDireccion == False:
+
+            self.rectangulo.left = self.rectangulo.left
+
+
         self.restriccionMovimiento()
+
 
 
     #Metodo para dibujar la bolita
     def dibujarBolita(self,ventana):
         ventana.blit(self.imagen, (self.rectangulo.left, self.rectangulo.centery))
 
+
     #Se van guardando los puntos de la bolita
     def acumularPuntos(self, puntos):
         self.puntaje += puntos
+
+
     #Se obtiene el puntaje de la bolita
     def obtenerPuntos(self):
-
         return self.puntaje
+
 
     #Se obtiene la vida de la bolita
     def obtenerVida(self):
-
         return self.vida
+
+
     #Se modifica la vida de la bolita según los obstáculos y powerUps
     #Se determina si la bolita tiene vida o no
     def modificarVida(self, cambioVida):
         self.vida += cambioVida
+
 
     #Metodo para el doble salto
     def activarSaltoDoble(self, estado):
         self.saltoDoble=estado
 
 
+    #Metodo para invertir dirección
+    def invertirDireccion(self,estado):
+        self.invertirDireccion = estado
+
+
+
     #Metodo para obtener el rectangulo
     def obtenerRectangulo(self):
         return self.rectangulo
+
 
     #Se restringe el movimiento que debe hacer la bolita
     def restriccionMovimiento(self):

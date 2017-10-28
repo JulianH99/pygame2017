@@ -69,7 +69,7 @@ class Escenario():
     # generador aleatorio de obstaculos
     def generarObstaculos(self, puntaje, tiempo):
 
-
+        self.cambiarFondo(self.FONDOS['NORMAL'])
         self.tiempo = tiempo
 
         self.__cambiarOrientacion()
@@ -89,7 +89,7 @@ class Escenario():
             o = randint(0,2)
             arriba = randint(0, 1)
             # creacion laser
-            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, 10, "Sonidos/laser.wav")
+            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, -10, "Sonidos/laser.wav")
             listObstaculos.append(laser)
             # creacion muro
             if arriba == 0:

@@ -3,6 +3,7 @@ import sys as s
 import time
 from random import randint
 from pygame.locals import *
+from Obstaculo import *
 
 #Clase Bolita
 class Bolita():
@@ -22,6 +23,7 @@ class Bolita():
         self.techo = techo
         self.tamanoPlatPiso = tamanoPlatPiso
         self.velocidadVertical = [0, 0]
+        self.vivoMuerto = True
         self.saltoDoble = False
         self.invertirDireccion = False
         self.saltos =0
@@ -31,7 +33,7 @@ class Bolita():
         self.cont4=0
         self.cont5=0
     #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
-    def salto(self,velocidad,tecla):
+    def salto(self,velocidad,tecla,estado):
 
         if self.gravedad:
 
@@ -76,10 +78,8 @@ class Bolita():
 
                 self.saltos = 0
 
-            if tecla == K_LEFT:
-                self.rectangulo.centerx -= velocidad
-            elif tecla == K_RIGHT:
-                self.rectangulo.centerx += velocidad
+            if estado==False:
+                self.__movHorizontal(velocidad, tecla)
 
         # Algoritmo salto simple
         else:
@@ -89,24 +89,19 @@ class Bolita():
                 if tecla == K_UP:
                     self.velocidadVertical[0] = 0
                     self.velocidadVertical[1] = (-10)*signo
-                elif tecla == K_LEFT:
-                    self.rectangulo.centerx -= velocidad
-                elif tecla == K_RIGHT:
-                    self.rectangulo.centerx += velocidad
+                if estado == False:
+                    self.__movHorizontal(velocidad, tecla)
 
             if self.rectangulo.centery == self.techo and self.gravedad==False:
                 if tecla == K_UP:
                     self.velocidadVertical[0] = 0
                     self.velocidadVertical[1] = (-10)*signo
-                elif tecla == K_LEFT:
-                    self.rectangulo.centerx -= velocidad
-                elif tecla == K_RIGHT:
-                    self.rectangulo.centerx += velocidad
+                if estado == False:
+                    self.__movHorizontal(velocidad, tecla)
 
-            if tecla == K_LEFT:
-                self.rectangulo.centerx -= velocidad
-            elif tecla == K_RIGHT:
-                self.rectangulo.centerx += velocidad
+
+            if estado==False:
+                self.__movHorizontal(velocidad, tecla)
 
 
 
@@ -160,8 +155,29 @@ class Bolita():
 
     #Se modifica la vida de la bolita según los obstáculos y powerUps
     #Se determina si la bolita tiene vida o no
-    def modificarVida(self, cambioVida):
-        self.vida += cambioVida
+    def modificarVida(self, cambioVida,escenario):
+        estado=False
+        if cambioVida==Obstaculo.PARED:
+
+            self.rectangulo.centerx += escenario.velocidad
+            estado=True
+        elif cambioVida==Obstaculo.PUAS:
+            self.rectangulo.centerx += escenario.velocidad
+            self.vida += cambioVida
+            estado=True
+        else:
+            self.vida += cambioVida
+            estado=False
+        print("Vida Actual: ",self.vida)
+
+        if self.vida>0:
+            self.vivoMuerto=True
+        else:
+            self.vivoMuerto=False
+
+
+        return estado
+
 
 
     #Metodo para el doble salto
@@ -194,3 +210,12 @@ class Bolita():
 
         if self.rectangulo.left < 0:
             self.rectangulo.left = 0
+    def __movHorizontal(self,velocidad,tecla):
+        if tecla == K_LEFT:
+            self.rectangulo.centerx -= velocidad
+        elif tecla == K_RIGHT:
+            self.rectangulo.centerx += velocidad
+    def getVivoMuerto(self):
+        return self.vivoMuerto
+
+

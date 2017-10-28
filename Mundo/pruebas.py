@@ -42,7 +42,7 @@ def main():
     escenario = Escenario(2,1, Escenario.ORIENT_DER_IZQ, ventana, ancho, alto)
 
     # bolita
-    bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
+    bolita = Bolita(500,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
     reloj = time.Clock()
     cont=0
     cont2=0
@@ -80,11 +80,11 @@ def main():
         escenario.dibujarFondo(ventana)
 
 
-        #print(escenario.colisionBolita(bolita.rectangulo))
+
         for evento in event.get():
             if evento.type==KEYDOWN:
                 if evento.key==K_LEFT or evento.key==K_RIGHT or evento.key==K_UP:
-                    bolita.salto(escenario.velocidad + 10, evento.key)
+                    bolita.salto(escenario.velocidad + 10, evento.key,bolita.modificarVida(escenario.colisionBolita(bolita.rectangulo),escenario))
 
 
             if evento.type == QUIT:
@@ -96,16 +96,20 @@ def main():
                 sprite_group.add(powerup)
 
         # bolita
-        bolita.salto(escenario.velocidad + 10, None)
+        bolita.salto(escenario.velocidad + 10, None,bolita.modificarVida(escenario.colisionBolita(bolita.rectangulo),escenario))
         bolita.dibujarBolita(ventana)
 
         bolita.saltoDoble = False
 
+        if bolita.getVivoMuerto()==False:
+            print("GameOver")
+            quit()
+            s.exit()
 
 
         # powerup
         sprite_group.update()
-        #print(colisionBolita(powerup,bolita))
+        colisionBolita(powerup,bolita)
         sprite_group.draw(ventana)
 
         # escneario y obstcaulos

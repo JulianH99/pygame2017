@@ -44,6 +44,8 @@ def main():
     # bolita
     bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
     reloj = time.Clock()
+    cont=0
+    cont2=0
     while True:
 
         reloj.tick(60)  # frames
@@ -78,6 +80,8 @@ def main():
         bolita.dibujarBolita(ventana)
         bolita.invertirDireccion = True
         bolita.saltoDoble = True
+
+
         # powerup
         sprite_group.update()
         print(colisionBolita(powerup,bolita))

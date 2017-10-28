@@ -25,6 +25,8 @@ class Bolita():
         self.saltoDoble = False
         self.invertirDireccion = False
         self.saltos =0
+        self.cont=0
+        self.cont2=0
 
     #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
     def salto(self,velocidad,tecla):
@@ -73,15 +75,14 @@ class Bolita():
 
 
         #Ubica la bolita deacuerdo a si se invierte la direccion o no
-        if self.invertirDireccion == True:
-
-            self.rectangulo.left = self.ancho
-
-
-        elif self.invertirDireccion == False:
-
-            self.rectangulo.left = self.rectangulo.left
-
+        if self.invertirDireccion and self.cont<1:
+            self.rectangulo.left=self.ancho
+            self.cont+=1
+            cont2=0
+        elif self.invertirDireccion==False and self.cont2<1:
+            self.rectangulo.left=0
+            self.cont2+=1
+            cont=0
 
         self.restriccionMovimiento()
 

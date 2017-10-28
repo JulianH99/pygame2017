@@ -51,16 +51,36 @@ def main():
         reloj.tick(60)  # frames
         tiempo = int(time.get_ticks()/100)
         if tiempo == 50:
+            bolita.gravedad = False
             escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            print("Gravedad inver y sentido escenario izq der y bolita iz y der")
         if tiempo == 100:
+            bolita.gravedad = True
             escenario.setOrientacion(escenario.ORIENT_DER_IZQ)
+            bolita.invertirDireccion = True
+            print("Gravedad nor y sentido escenario der izq y bolita der iz")
+        if tiempo == 150:
+            bolita.gravedad = False
+            escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            bolita.invertirDireccion = False
+            print("Gravedad inver y sentido escenario izq der y bolita iz der")
+        if tiempo == 200:
+            bolita.gravedad = True
+            escenario.setOrientacion(escenario.ORIENT_DER_IZQ)
+            print("Gravedad nor y sentido escenario der izq y bolita iz der")
+        if tiempo == 250:
+            bolita.gravedad = False
+            escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            bolita.invertirDireccion = False
+            print("Gravedad inver y sentido escenario izq der y bolita iz der")
+
 
 
         escenario.moverFondo()
         escenario.dibujarFondo(ventana)
 
 
-        print(escenario.colisionBolita(bolita.rectangulo))
+        #print(escenario.colisionBolita(bolita.rectangulo))
         for evento in event.get():
             if evento.type==KEYDOWN:
                 if evento.key==K_LEFT or evento.key==K_RIGHT or evento.key==K_UP:
@@ -78,13 +98,14 @@ def main():
         # bolita
         bolita.salto(escenario.velocidad + 10, None)
         bolita.dibujarBolita(ventana)
-        bolita.invertirDireccion = True
-        bolita.saltoDoble = True
+
+        bolita.saltoDoble = False
+
 
 
         # powerup
         sprite_group.update()
-        print(colisionBolita(powerup,bolita))
+        #print(colisionBolita(powerup,bolita))
         sprite_group.draw(ventana)
 
         # escneario y obstcaulos

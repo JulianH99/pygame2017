@@ -7,7 +7,7 @@ from pygame.locals import *
 #Clase Bolita
 class Bolita():
     #Metodo Constructor
-    def __init__(self, vidaInicial, posX, posY, ancho, alto, tamanoPlat, techo):
+    def __init__(self, vidaInicial, posX, posY, ancho, alto, tamanoPlatPiso, techo):
         self.vida = vidaInicial
         self.puntaje = 0
         self.imagen = pygame.transform.scale(pygame.image.load('Imagenes/bolita1.png'), (70, 70))
@@ -20,16 +20,43 @@ class Bolita():
         self.ancho = ancho
         self.alto = alto
         self.techo = techo
-        self.tamanoPlat = tamanoPlat
+        self.tamanoPlatPiso = tamanoPlatPiso
         self.velocidadVertical = [0, 0]
         self.saltoDoble = False
         self.invertirDireccion = False
         self.saltos =0
         self.cont=0
         self.cont2=0
-
+        self.cont3=0
+        self.cont4=0
+        self.cont5=0
     #Metodo para el salto de la bolita, incluyendo el doble y el desplazamiento
     def salto(self,velocidad,tecla):
+
+        if self.gravedad:
+
+            self.aceleGrave = 0.3
+            if self.cont4<1:
+                self.rectangulo.centery = self.alto - (self.imagenrect.height / 2) - self.tamanoPlatPiso + 10 - .5
+                print("entra a piso")
+                self.cont4+=1
+            signo = 1
+            self.cont3=0
+            self.cont5=0
+            #self.velocidadVertical[1]=0
+
+        else:
+
+            self.aceleGrave = -0.3
+            signo = -1
+            if self.cont3<1:
+                self.rectangulo.top = self.techo
+                print("-------------------------------------------------------")
+
+                self.cont3+=1
+            self.cont4=0
+
+
 
 
         # Algoritmo salto doble
@@ -38,9 +65,15 @@ class Bolita():
             if self.saltos<1:
                 if tecla == K_UP:
                     self.velocidadVertical[0] = 0
-                    self.velocidadVertical[1] = -10
+                    self.velocidadVertical[1] = (-10) *signo
                     self.saltos = self.saltos + 1
-            if self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlat + 10 - .5:
+
+            if (self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlatPiso + 10 - .5) and self.gravedad:
+
+                self.saltos = 0
+
+            elif (self.rectangulo.centery==self.techo) and (self.gravedad==False):
+
                 self.saltos = 0
 
             if tecla == K_LEFT:
@@ -51,26 +84,43 @@ class Bolita():
         # Algoritmo salto simple
         else:
 
-            if self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlat + 10 - .5:
+
+            if self.rectangulo.centery == self.alto - (self.imagenrect.height / 2) - self.tamanoPlatPiso + 10 - .5 and self.gravedad:
                 if tecla == K_UP:
                     self.velocidadVertical[0] = 0
-                    self.velocidadVertical[1] = -10
+                    self.velocidadVertical[1] = (-10)*signo
                 elif tecla == K_LEFT:
                     self.rectangulo.centerx -= velocidad
                 elif tecla == K_RIGHT:
                     self.rectangulo.centerx += velocidad
 
-            else:
-                if tecla == K_LEFT:
+            if self.rectangulo.centery == self.techo and self.gravedad==False:
+                if tecla == K_UP:
+                    self.velocidadVertical[0] = 0
+                    self.velocidadVertical[1] = (-10)*signo
+                elif tecla == K_LEFT:
                     self.rectangulo.centerx -= velocidad
                 elif tecla == K_RIGHT:
                     self.rectangulo.centerx += velocidad
+
+            if tecla == K_LEFT:
+                self.rectangulo.centerx -= velocidad
+            elif tecla == K_RIGHT:
+                self.rectangulo.centerx += velocidad
+
+
+
+        if self.gravedad==False and self.cont5<1:
+            self.velocidadVertical[1] = 0
+            self.cont5+=1
 
 
 
 
         self.velocidadVertical[0] = self.aceleGrave + self.velocidadVertical[1]
-        self.rectangulo.centery += self.velocidadVertical[0]
+
+        self.rectangulo.centery += (self.velocidadVertical[0])
+        #print(self.rectangulo.centery,"---",self.velocidadVertical[1])
         self.velocidadVertical[1] = self.velocidadVertical[0]
 
 
@@ -136,8 +186,8 @@ class Bolita():
         if self.rectangulo.centery < self.techo:
             self.rectangulo.centery = self.techo
             self.velocidadVertical = [0, 0]
-        if self.rectangulo.centery > (self.alto - (self.imagenrect.height/2)-self.tamanoPlat+10):
-            self.rectangulo.centery = self.alto - (self.imagenrect.height/2)-self.tamanoPlat+10
+        if self.rectangulo.centery > (self.alto - (self.imagenrect.height/2)-self.tamanoPlatPiso+10):
+            self.rectangulo.centery = self.alto - (self.imagenrect.height/2)-self.tamanoPlatPiso+10
 
         if self.rectangulo.right > self.ancho:
             self.rectangulo.right = self.ancho

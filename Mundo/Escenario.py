@@ -77,7 +77,7 @@ class Escenario():
         # velocidad varia cada 30 segundos
         if tiempo != self.__aux1 and tiempo % 300 == 0:
             self.__aux1 = tiempo
-            self.velocidad += (1*self.dirVel)
+            self.velocidad += (self.dirVel*self.dirVel)
             self.cambiarFondo(self.FONDOS['AUMENTO_VELOCIDAD'])
 
 
@@ -110,7 +110,7 @@ class Escenario():
 
             if self.__verificiacionObstaculos(listObstaculos[o]):
                 self.obstaculos.append(listObstaculos[o])
-                print("Entra 1")
+
 
 
                 """self.obstaculos[len(self.obstaculos) - 1].rect.left -= 20
@@ -156,7 +156,7 @@ class Escenario():
     def __verificiacionObstaculos(self, obstaculo):
 
         if int(len(self.obstaculos))==0:
-            print(len(self.obstaculos))
+            #print(len(self.obstaculos))
             return True
         else:
 
@@ -164,7 +164,7 @@ class Escenario():
 
 
             if ultimoObstaculo.rect.top==self.obstaculos[len(self.obstaculos)-1].rect.top and (ultimoObstaculo.rect.left<=obstaculo.rect.left<=ultimoObstaculo.rect.right or ultimoObstaculo.rect.left<=obstaculo.rect.right<=ultimoObstaculo.rect.right):
-                print("entra 2")
+                #print("entra 2")
                 return False
             else:
                 return True

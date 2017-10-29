@@ -65,11 +65,12 @@ class Escenario():
         self.__aux1= 0
         self.__aux2 = 0
         self.__auxTiempoFondo = 0
+        self.__cont=0
 
     # generador aleatorio de obstaculos
     def generarObstaculos(self, puntaje, tiempo):
 
-        self.cambiarFondo(self.FONDOS['NORMAL'])
+        #self.cambiarFondo(self.FONDOS['NORMAL'])
         self.tiempo = tiempo
 
         self.__cambiarOrientacion()
@@ -78,6 +79,8 @@ class Escenario():
         if tiempo != self.__aux1 and tiempo % 300 == 0:
             self.__aux1 = tiempo
             self.velocidad += (self.dirVel*self.dirVel)
+            trueno=mixer.Sound("Sonidos/rayo.wav")
+            trueno.play()
             self.cambiarFondo(self.FONDOS['AUMENTO_VELOCIDAD'])
 
 
@@ -97,7 +100,7 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED, "Sonidos/shoot.wav")
+            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED, "Sonidos/pared.wav")
             listObstaculos.append(pared)
             # creacion puas
             if arriba == 0:
@@ -212,16 +215,22 @@ class Escenario():
             if type(self.obstaculos[i]) is Laser:
                 if self.obstaculos[i].activo:
                     self.cambiarFondo(self.FONDOS['OBSTACULO'])
+
                     self.obstaculos[i].sonido.play()
+
                     return self.obstaculos[i].getValorDanio()
                 else:
                     self.cambiarFondo(self.FONDOS['NORMAL'])
                     return 0
 
             else:
-                self.obstaculos[i].sonido.play()
+                if self.__cont < 1:
+                    self.obstaculos[i].sonido.play()
+                    self.__cont += 1
                 return self.obstaculos[i].getValorDanio()
-        else: self.cambiarFondo(self.FONDOS['NORMAL'])
+        else:
+            self.cambiarFondo(self.FONDOS['NORMAL'])
+            self.__cont=0
 
         return 0
 
@@ -233,8 +242,8 @@ class Escenario():
         # plataformas
         ventana.blit(self.plataforma[0],self.rectPlataforma[0])
         ventana.blit(self.plataforma[1], self.rectPlataforma[1])
-        ventana.blit(self.plataformaA[0], self.rectPlataformaA[0])
-        ventana.blit(self.plataformaA[1], self.rectPlataformaA[1])
+        #ventana.blit(self.plataformaA[0], self.rectPlataformaA[0])
+        #ventana.blit(self.plataformaA[1], self.rectPlataformaA[1])
 
 
     # movimeinto del fondo

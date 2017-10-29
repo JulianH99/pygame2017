@@ -14,7 +14,7 @@ pygame.time.set_timer(PWEVENT, POWERUP_INTERVAL)
 powerup = None
 sprite_group = pygame.sprite.Group()
 def generate():
-    return PowerupGenerator(ancho, alto).generate()
+    return PowerupGenerator(ancho, alto-150).generate()
 
 def colisionBolita(power_up,ball):
     if power_up is not None:
@@ -109,7 +109,7 @@ def main():
 
         # powerup
         sprite_group.update()
-        colisionBolita(powerup,bolita)
+        #colisionBolita(powerup,bolita)
         sprite_group.draw(ventana)
 
         # escneario y obstcaulos

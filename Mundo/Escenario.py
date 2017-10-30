@@ -104,12 +104,14 @@ class Escenario():
             listObstaculos.append(pared)
             # creacion puas
             if arriba == 0:
-                posY = 40 + self.rectPlataformaA[0].height
+                posY =  23+ self.rectPlataformaA[0].height
+                puas = Obstaculo("Imagenes/puasA.png", self.posX, posY, Obstaculo.PUAS, "Sonidos/shoot.wav")
+
 
             else:
-                posY = self.alto - 40 - self.rectPlataforma[0].height
-            puas = Obstaculo("Imagenes/pared.png", self.posX, posY, Obstaculo.PUAS,"Sonidos/shoot.wav")
-            listObstaculos.append(pared)
+                posY = self.alto -23 - self.rectPlataforma[0].height
+                puas = Obstaculo("Imagenes/puas1.png", self.posX, posY, Obstaculo.PUAS,"Sonidos/shoot.wav")
+            listObstaculos.append(puas)
 
             if self.__verificiacionObstaculos(listObstaculos[o]):
                 self.obstaculos.append(listObstaculos[o])
@@ -365,7 +367,7 @@ class Escenario():
 
     # obtenerOrientacion
     def getOrientacion(self):
-        return self.velocidad
+        return self.orientacion
 
     # colocarOrientacion
     def setOrientacion(self, orientacion):

@@ -157,12 +157,19 @@ class Bolita():
     #Se determina si la bolita tiene vida o no
     def modificarVida(self, cambioVida,escenario):
         estado=False
+        signo=-1
+
+        if escenario.getOrientacion()==escenario.ORIENT_DER_IZQ:
+            signo=1
+
+
+
         if cambioVida==Obstaculo.PARED:
 
-            self.rectangulo.centerx += escenario.velocidad
+            self.rectangulo.centerx -=escenario.velocidad*signo
             estado=True
         elif cambioVida==Obstaculo.PUAS:
-            self.rectangulo.centerx += escenario.velocidad
+            self.rectangulo.centerx -=escenario.velocidad*signo
             self.vida += cambioVida
             estado=True
         else:

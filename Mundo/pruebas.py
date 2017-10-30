@@ -50,6 +50,9 @@ def main():
 
         reloj.tick(60)  # frames
         tiempo = int(time.get_ticks()/100)
+        #bolita.invertirDireccion=True
+        escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+        """
         if tiempo == 50:
             bolita.gravedad = False
             escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
@@ -73,7 +76,7 @@ def main():
             escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
             bolita.invertirDireccion = False
             print("Gravedad inver y sentido escenario izq der y bolita iz der")
-
+    """
 
 
         escenario.moverFondo()

@@ -153,6 +153,8 @@ class Bolita():
         return self.vida
 
 
+
+
     #Se modifica la vida de la bolita según los obstáculos y powerUps
     #Se determina si la bolita tiene vida o no
     def modificarVida(self, cambioVida,escenario):

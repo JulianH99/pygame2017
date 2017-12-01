@@ -25,14 +25,14 @@ class PowerUp(pygame.sprite.Sprite):
         self.__rect = self.__image.get_rect()
         self.__rect.center = (self.__x_limit, self.__y_limit)
 
-    def execute(self, ball):
+    def execute(self, ball, escenario):
         """
             Este metodo se encarga de ejecutar el efecto sobre la bola una vez que este es tocado
             por la bola
         :param ball: objeto de tipo Ball que es tocado por el powerUp
         :return:
         """
-        self.__effect.apply_over(ball)
+        self.__effect.apply_over(ball,escenario)
 
     def disappear(self):
         """
@@ -50,9 +50,9 @@ class PowerUp(pygame.sprite.Sprite):
         if self.rect.x < -10:
             self.disappear()
 
-    def check_collide(self, ball):
+    def check_collide(self, ball,escenario):
         if self.__rect.colliderect(ball.rectangulo):
-            self.execute(ball)
+            self.execute(ball,escenario)
             self.disappear()
             self.__trigger_effect_countdown()
             return True

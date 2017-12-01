@@ -16,9 +16,9 @@ sprite_group = pygame.sprite.Group()
 def generate():
     return PowerupGenerator(ancho, alto-150).generate()
 
-def colisionBolita(power_up,ball):
+def colisionBolita(power_up,ball,escen):
     if power_up is not None:
-        power_up.check_collide(ball)
+        power_up.check_collide(ball,escen)
 
         if power_up.effect.triggered:
             power_up.effect.start_reset_countdown(ball, 10)
@@ -47,11 +47,11 @@ def main():
     cont=0
     cont2=0
     while True:
-
+        dt = reloj.tick()  # provisional
         reloj.tick(60)  # frames
         tiempo = int(time.get_ticks()/100)
         #bolita.invertirDireccion=True
-        escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+        #escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
         """
         if tiempo == 50:
             bolita.gravedad = False
@@ -115,6 +115,7 @@ def main():
         #colisionBolita(powerup,bolita)
         sprite_group.draw(ventana)
 
+        colisionBolita(powerup,bolita,escenario)
         # escneario y obstcaulos
         escenario.generarObstaculos(21,tiempo)
         escenario.movimientoObstaculos()

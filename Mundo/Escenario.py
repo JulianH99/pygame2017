@@ -362,7 +362,7 @@ class Escenario():
         return self.velocidad
 
     # colocar valor velocidad
-    def setVeolcidad(self, velocidad):
+    def setVelocidad(self, velocidad):
         self.velocidad = velocidad
 
     # obtenerOrientacion

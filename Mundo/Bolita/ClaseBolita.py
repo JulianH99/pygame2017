@@ -179,10 +179,17 @@ class Bolita():
             estado=False
         print("Vida Actual: ",self.vida)
 
+
+
+
         if self.vida>0:
             self.vivoMuerto=True
         else:
-            self.vivoMuerto=False
+            self.vivoMuerto = False
+
+        if (self.rectangulo.right>=escenario.ancho or self.rectangulo.left<=0) and (cambioVida==Obstaculo.PARED or cambioVida==Obstaculo.PUAS):
+            self.vivoMuerto = False
+
 
 
         return estado

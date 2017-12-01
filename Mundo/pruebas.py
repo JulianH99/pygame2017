@@ -46,6 +46,8 @@ def main():
     reloj = time.Clock()
     cont=0
     cont2=0
+
+
     while True:
         dt = reloj.tick()  # provisional
         reloj.tick(60)  # frames
@@ -99,6 +101,9 @@ def main():
                 sprite_group.add(powerup)
 
         # bolita
+
+
+
         bolita.salto(escenario.velocidad + 10, None,bolita.modificarVida(escenario.colisionBolita(bolita.rectangulo),escenario))
         bolita.dibujarBolita(ventana)
 

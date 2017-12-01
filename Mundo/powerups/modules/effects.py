@@ -112,6 +112,22 @@ class ChangeStageDirectionEffect(Effect):
         return self.__image
 # fin clase ChangeStageDirectionEffect
 
+# definicion clase ChangeStageDirectionEffect
+class ChangeGravityEffect(Effect):
+
+    __image = IMAGES_PATH + "changegravity.png"
+
+    def apply_over(self, obj,obj2):
+
+        obj.invertirGravedad();
+
+    def reset(self, obj):
+        pass
+
+    @property
+    def image(self):
+        return self.__image
+# fin clase ChangeStageDirectionEffect
 
 # definicion MoreLifeEffect
 class MoreLifeEffect(ReduceOrAddEffect):

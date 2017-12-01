@@ -198,6 +198,9 @@ class Bolita():
     def invertirDireccion(self,estado):
         self.invertirDireccion = estado
 
+    #Metodo para invertir gravedad
+    def invertirGravedad(self):
+        self.gravedad = not self.gravedad
 
 
     #Metodo para obtener el rectangulo

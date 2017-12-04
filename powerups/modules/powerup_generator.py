@@ -14,8 +14,7 @@ class PowerupGenerator:
                                LessScorePointsEffect,
                                LessLifeEffect,
                                MoreSpeedEffect,
-                               LessSpeedEffect,
-                               ChangeStageDirectionEffect]
+                               LessSpeedEffect]
         self.__scr_width = scr_width + 100
         self.__scr_heigth = scr_heigth - 100
 

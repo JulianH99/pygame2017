@@ -250,3 +250,24 @@ class LessSpeedEffect(ReduceOrAddEffect):
 # fin definicion clase LessSpeedEffect
 
 
+# definicion clase ImmuneEffect
+class ImmuneEffect(Effect):
+
+    __image = IMAGES_PATH + "immune.png"
+
+    def apply_over(self, obj):
+        if hasattr(obj, 'puede_recibir_danio'):
+            self.before_effect_value = obj.puede_recibir_danio
+            obj.puede_recibir_danio = False
+            print("Effecto ImmuneEffect activado. No se deje engañar por la imagen.")
+        else:
+            raise AttributeError("La bola no tiene la propiedad de danio :v")
+
+    def reset(self, obj):
+        obj.puede_recibir_danio = self.before_effect_value
+
+    @property
+    def image(self):
+        return self.__image
+# fin definicion ImmuneEffect
+

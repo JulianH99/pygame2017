@@ -1,5 +1,5 @@
 import pygame
-from modules.effects import reset_event_ins
+from powerups.modules.effects import reset_event_ins
 
 
 class PowerUp(pygame.sprite.Sprite):
@@ -11,7 +11,7 @@ class PowerUp(pygame.sprite.Sprite):
 
     def __init__(self, effect, limits):
         """
-            picture(string) : ruta de la imagen del powerUp
+            limits : limites de escenario para generar las posiciones aleatorias del power_up
             type(obj) : tipo del powerUp
         """
 
@@ -51,6 +51,7 @@ class PowerUp(pygame.sprite.Sprite):
             self.disappear()
 
     def check_collide(self, ball):
+        print(f"{self.__rect}")
         if self.__rect.colliderect(ball.rect):
             self.execute(ball)
             self.disappear()

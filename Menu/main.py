@@ -37,12 +37,12 @@ def juego():
         ventana.blit(ball, ballrect)
 
 def creditos():
-    print " Funcion que muestra los creditos del programa."
+    print ("Creditos")
 
 
 def salir():
     import sys
-    print " Gracias por utilizar este programa."
+    print (" se salio")
     sys.exit(0)
 
 

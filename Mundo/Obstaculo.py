@@ -4,7 +4,7 @@ from pygame.locals import *
 
 class Obstaculo():
     PARED = -2
-    PUAS = -1
+    PUAS = -2
 
     # constructor
     def __init__(self, ruta, X, Y, danio, sonido):

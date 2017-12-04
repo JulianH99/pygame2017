@@ -14,11 +14,11 @@ pygame.time.set_timer(PWEVENT, POWERUP_INTERVAL)
 powerup = None
 sprite_group = pygame.sprite.Group()
 def generate():
-    return PowerupGenerator(ancho, alto).generate()
+    return PowerupGenerator(ancho, alto-150).generate()
 
-def colisionBolita(power_up,ball):
+def colisionBolita(power_up,ball,escen):
     if power_up is not None:
-        power_up.check_collide(ball)
+        power_up.check_collide(ball,escen)
 
         if power_up.effect.triggered:
             power_up.effect.start_reset_countdown(ball, 10)
@@ -42,27 +42,54 @@ def main():
     escenario = Escenario(2,1, Escenario.ORIENT_DER_IZQ, ventana, ancho, alto)
 
     # bolita
-    bolita = Bolita(10,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
+    bolita = Bolita(500,0,escenario.alto - 40 - escenario.rectPlataforma[0].height,ancho,alto,imagenFondo.get_height()+(escenario.rectPlataforma[0].height)/2,escenario.rectPlataformaA[0].height)
     reloj = time.Clock()
-    while True:
+    cont=0
+    cont2=0
 
+
+    while True:
+        dt = reloj.tick()  # provisional
         reloj.tick(60)  # frames
         tiempo = int(time.get_ticks()/100)
+        #bolita.invertirDireccion=True
+        #escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+        """
         if tiempo == 50:
+            bolita.gravedad = False
             escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            print("Gravedad inver y sentido escenario izq der y bolita iz y der")
         if tiempo == 100:
+            bolita.gravedad = True
             escenario.setOrientacion(escenario.ORIENT_DER_IZQ)
+            bolita.invertirDireccion = True
+            print("Gravedad nor y sentido escenario der izq y bolita der iz")
+        if tiempo == 150:
+            bolita.gravedad = False
+            escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            bolita.invertirDireccion = False
+            print("Gravedad inver y sentido escenario izq der y bolita iz der")
+        if tiempo == 200:
+            bolita.gravedad = True
+            escenario.setOrientacion(escenario.ORIENT_DER_IZQ)
+            print("Gravedad nor y sentido escenario der izq y bolita iz der")
+        if tiempo == 250:
+            bolita.gravedad = False
+            escenario.setOrientacion(escenario.ORIENT_IZQ_DER)
+            bolita.invertirDireccion = False
+            print("Gravedad inver y sentido escenario izq der y bolita iz der")
+    """
 
 
         escenario.moverFondo()
         escenario.dibujarFondo(ventana)
 
 
-        print(escenario.colisionBolita(bolita.rectangulo))
+
         for evento in event.get():
             if evento.type==KEYDOWN:
                 if evento.key==K_LEFT or evento.key==K_RIGHT or evento.key==K_UP:
-                    bolita.salto(escenario.velocidad + 10, evento.key)
+                    bolita.salto(escenario.velocidad + 10, evento.key,bolita.modificarVida(escenario.colisionBolita(bolita.rectangulo),escenario))
 
 
             if evento.type == QUIT:
@@ -74,15 +101,26 @@ def main():
                 sprite_group.add(powerup)
 
         # bolita
-        bolita.salto(escenario.velocidad + 10, None)
+
+
+
+        bolita.salto(escenario.velocidad + 10, None,bolita.modificarVida(escenario.colisionBolita(bolita.rectangulo),escenario))
         bolita.dibujarBolita(ventana)
-        bolita.invertirDireccion = True
-        bolita.saltoDoble = True
+
+        bolita.saltoDoble = False
+
+        if bolita.getVivoMuerto()==False:
+            print("GameOver")
+            quit()
+            s.exit()
+
+
         # powerup
         sprite_group.update()
-        print(colisionBolita(powerup,bolita))
+        #colisionBolita(powerup,bolita)
         sprite_group.draw(ventana)
 
+        colisionBolita(powerup,bolita,escenario)
         # escneario y obstcaulos
         escenario.generarObstaculos(21,tiempo)
         escenario.movimientoObstaculos()

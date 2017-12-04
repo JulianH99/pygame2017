@@ -65,11 +65,12 @@ class Escenario():
         self.__aux1= 0
         self.__aux2 = 0
         self.__auxTiempoFondo = 0
+        self.__cont=0
 
     # generador aleatorio de obstaculos
     def generarObstaculos(self, puntaje, tiempo):
 
-
+        #self.cambiarFondo(self.FONDOS['NORMAL'])
         self.tiempo = tiempo
 
         self.__cambiarOrientacion()
@@ -77,7 +78,9 @@ class Escenario():
         # velocidad varia cada 30 segundos
         if tiempo != self.__aux1 and tiempo % 300 == 0:
             self.__aux1 = tiempo
-            self.velocidad += (1*self.dirVel)
+            self.velocidad += (self.dirVel*self.dirVel)
+            trueno=mixer.Sound("Sonidos/rayo.wav")
+            trueno.play()
             self.cambiarFondo(self.FONDOS['AUMENTO_VELOCIDAD'])
 
 
@@ -89,7 +92,7 @@ class Escenario():
             o = randint(0,2)
             arriba = randint(0, 1)
             # creacion laser
-            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, 10, "Sonidos/laser.wav")
+            laser = Laser("Imagenes/laserA.png", "Imagenes/laserD.png", self.posX, 311, -10, "Sonidos/laser.wav")
             listObstaculos.append(laser)
             # creacion muro
             if arriba == 0:
@@ -97,20 +100,22 @@ class Escenario():
 
             else:
                 posY = self.alto - 40 - self.rectPlataforma[0].height
-            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED, "Sonidos/shoot.wav")
+            pared = Obstaculo("Imagenes/pared.png",self.posX, posY, Obstaculo.PARED, "Sonidos/pared.wav")
             listObstaculos.append(pared)
             # creacion puas
             if arriba == 0:
-                posY = 40 + self.rectPlataformaA[0].height
+                posY =  23+ self.rectPlataformaA[0].height
+                puas = Obstaculo("Imagenes/puasA.png", self.posX, posY, Obstaculo.PUAS, "Sonidos/shoot.wav")
+
 
             else:
-                posY = self.alto - 40 - self.rectPlataforma[0].height
-            puas = Obstaculo("Imagenes/pared.png", self.posX, posY, Obstaculo.PUAS,"Sonidos/shoot.wav")
-            listObstaculos.append(pared)
+                posY = self.alto -23 - self.rectPlataforma[0].height
+                puas = Obstaculo("Imagenes/puas1.png", self.posX, posY, Obstaculo.PUAS,"Sonidos/shoot.wav")
+            listObstaculos.append(puas)
 
             if self.__verificiacionObstaculos(listObstaculos[o]):
                 self.obstaculos.append(listObstaculos[o])
-                print("Entra 1")
+
 
 
                 """self.obstaculos[len(self.obstaculos) - 1].rect.left -= 20
@@ -156,7 +161,7 @@ class Escenario():
     def __verificiacionObstaculos(self, obstaculo):
 
         if int(len(self.obstaculos))==0:
-            print(len(self.obstaculos))
+            #print(len(self.obstaculos))
             return True
         else:
 
@@ -164,7 +169,7 @@ class Escenario():
 
 
             if ultimoObstaculo.rect.top==self.obstaculos[len(self.obstaculos)-1].rect.top and (ultimoObstaculo.rect.left<=obstaculo.rect.left<=ultimoObstaculo.rect.right or ultimoObstaculo.rect.left<=obstaculo.rect.right<=ultimoObstaculo.rect.right):
-                print("entra 2")
+                #print("entra 2")
                 return False
             else:
                 return True
@@ -212,16 +217,22 @@ class Escenario():
             if type(self.obstaculos[i]) is Laser:
                 if self.obstaculos[i].activo:
                     self.cambiarFondo(self.FONDOS['OBSTACULO'])
+
                     self.obstaculos[i].sonido.play()
+
                     return self.obstaculos[i].getValorDanio()
                 else:
                     self.cambiarFondo(self.FONDOS['NORMAL'])
                     return 0
 
             else:
-                self.obstaculos[i].sonido.play()
+                if self.__cont < 1:
+                    self.obstaculos[i].sonido.play()
+                    self.__cont += 1
                 return self.obstaculos[i].getValorDanio()
-        else: self.cambiarFondo(self.FONDOS['NORMAL'])
+        else:
+            self.cambiarFondo(self.FONDOS['NORMAL'])
+            self.__cont=0
 
         return 0
 
@@ -233,8 +244,8 @@ class Escenario():
         # plataformas
         ventana.blit(self.plataforma[0],self.rectPlataforma[0])
         ventana.blit(self.plataforma[1], self.rectPlataforma[1])
-        ventana.blit(self.plataformaA[0], self.rectPlataformaA[0])
-        ventana.blit(self.plataformaA[1], self.rectPlataformaA[1])
+        #ventana.blit(self.plataformaA[0], self.rectPlataformaA[0])
+        #ventana.blit(self.plataformaA[1], self.rectPlataformaA[1])
 
 
     # movimeinto del fondo
@@ -351,12 +362,12 @@ class Escenario():
         return self.velocidad
 
     # colocar valor velocidad
-    def setVeolcidad(self, velocidad):
+    def setVelocidad(self, velocidad):
         self.velocidad = velocidad
 
     # obtenerOrientacion
     def getOrientacion(self):
-        return self.velocidad
+        return self.orientacion
 
     # colocarOrientacion
     def setOrientacion(self, orientacion):

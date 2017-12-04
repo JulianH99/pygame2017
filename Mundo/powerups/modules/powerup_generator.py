@@ -14,13 +14,16 @@ class PowerupGenerator:
                                LessScorePointsEffect,
                                LessLifeEffect,
                                MoreSpeedEffect,
-                               LessSpeedEffect]
+                               LessSpeedEffect,
+                               ChangeStageDirectionEffect,
+                               ChangeGravityEffect]
+
         self.__scr_width = scr_width + 100
-        self.__scr_heigth = scr_heigth - 100
+        self.__scr_heigth = scr_heigth
 
     def generate(self):
         pos_x = self.__scr_width
-        pos_y = random.randint(20, self.__scr_heigth)
+        pos_y = random.randint(160, self.__scr_heigth)
 
         power_up = PowerUp(random.choice(self.__effects_list)(), (pos_x, pos_y))
         return power_up

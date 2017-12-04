@@ -27,7 +27,7 @@ class Effect:
         self.__effect_time = 0
         self.before_effect_value = None
 
-    def apply_over(self, obj):
+    def apply_over(self, obj,obj2):
         """
         El metodo apply_over define la accion que tendra el efecto sobre la bola.
         Es especifico de cada efecto, por esa razon se encuentra vacio en la clase base
@@ -97,11 +97,12 @@ class ChangeStageDirectionEffect(Effect):
 
     __image = IMAGES_PATH + "changedirection.png"
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'getOrientacion') and hasattr(obj, 'setOrientacion'):
-            obj.setOrientacion(not obj.getOrientacion())
+    def apply_over(self, obj,obj2):
+
+        if obj2.getOrientacion()==obj2.ORIENT_IZQ_DER:
+            obj2.setOrientacion(obj2.ORIENT_DER_IZQ)
         else:
-            raise AttributeError("Escenario no tiene getOrientacion ni setOrientacion")
+            obj2.setOrientacion(obj2.ORIENT_IZQ_DER)
 
     def reset(self, obj):
         obj.setOrientacion(not obj.getOrientacion())
@@ -111,6 +112,22 @@ class ChangeStageDirectionEffect(Effect):
         return self.__image
 # fin clase ChangeStageDirectionEffect
 
+# definicion clase ChangeStageDirectionEffect
+class ChangeGravityEffect(Effect):
+
+    __image = IMAGES_PATH + "changegravity.png"
+
+    def apply_over(self, obj,obj2):
+
+        obj.invertirGravedad();
+
+    def reset(self, obj):
+        pass
+
+    @property
+    def image(self):
+        return self.__image
+# fin clase ChangeStageDirectionEffect
 
 # definicion MoreLifeEffect
 class MoreLifeEffect(ReduceOrAddEffect):
@@ -119,9 +136,9 @@ class MoreLifeEffect(ReduceOrAddEffect):
     """
     __image = IMAGES_PATH + "morelife.png"
 
-    def apply_over(self, obj):
+    def apply_over(self, obj,obj2):
         # si existe el atributo 'life_points' en la calse bola...
-        if hasattr(obj, 'life_points'):
+        if hasattr(obj, 'vida'):
             # se suma a sus puntos de vida la proporcion definida en el constructor
             obj.vida += self.proportion
         else:
@@ -143,8 +160,8 @@ class LessLifeEffect(ReduceOrAddEffect):
 
     __image = IMAGES_PATH + "lesslife.png"
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'life_points'):
+    def apply_over(self, obj, obj2):
+        if hasattr(obj, 'vida'):
             obj.vida -= self.proportion
 
     @property
@@ -162,9 +179,9 @@ class MoreScorePointsEffect(ReduceOrAddEffect):
 
     __image = IMAGES_PATH + "morescore.png"
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'score'):
-            obj.score += self.proportion
+    def apply_over(self, obj,obj2):
+        if hasattr(obj, 'puntaje'):
+            obj.puntaje += self.proportion
         else:
             raise AttributeError("La bola no tiene puntaje we u.u")
 
@@ -182,9 +199,9 @@ class LessScorePointsEffect(ReduceOrAddEffect):
 
     __image = IMAGES_PATH + "lessscore.png"
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'score'):
-            obj.score -= self.proportion
+    def apply_over(self, obj,obj2):
+        if hasattr(obj, 'puntaje'):
+            obj.puntaje -= self.proportion
         else:
             raise AttributeError("La bola no tiene puntaje we u.u")
 
@@ -203,15 +220,15 @@ class MoreSpeedEffect(ReduceOrAddEffect):
 
     __image = IMAGES_PATH + "morespeed.png"
 
-    def __init__(self, proportion=3):
+    def __init__(self, proportion=1):
         super().__init__(proportion)
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'speed'):
-            self.before_effect_value = obj.speed
-            obj.speed += self.proportion
-        else:
-            raise AttributeError("La bola no tiene atributo velocidad")
+    def apply_over(self, obj, obj2):
+
+            self.before_effect_value = obj2.getVelocidad()
+            obj2.setVelocidad (obj2.getVelocidad()+self.proportion)
+
+
 
     def reset(self, obj):
         obj.speed = self.before_effect_value
@@ -231,15 +248,12 @@ class LessSpeedEffect(ReduceOrAddEffect):
 
     __image = IMAGES_PATH + "lessspeed.png"
 
-    def __init__(self, proportion=3):
+    def __init__(self, proportion=1):
         super().__init__(proportion)
 
-    def apply_over(self, obj):
-        if hasattr(obj, 'speed'):
-            self.before_effect_value = obj.speed
-            obj.speed -= self.proportion
-        else:
-            raise AttributeError("La bola no tiene atributo velocidad")
+    def apply_over(self, obj,obj2):
+        self.before_effect_value = obj2.getVelocidad()
+        obj2.setVelocidad(obj2.getVelocidad() - self.proportion)
 
     def reset(self, obj):
         obj.speed = self.before_effect_value

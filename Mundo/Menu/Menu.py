@@ -6,10 +6,11 @@ class Menu:
 
     def __init__(self, opciones):
         self.opciones = opciones
-        self.font = pygame.font.Font(None, 20)
+        self.font = pygame.font.SysFont("Century gothic", 40)
         self.seleccionado = 0
         self.total = len(self.opciones)
         self.mantiene_pulsado = False
+        self.app_name = "Ball run"
 
     def actualizar(self):
 
@@ -36,15 +37,18 @@ class Menu:
 
         total = self.total
         indice = 0
-        altura_de_opcion = 30
+        altura_de_opcion = 50
         x = 105
         y = 105
 
+        app_title = self.font.render(self.app_name, 1, (232, 232, 232))
+        screen.blit(app_title, (50, 20))
+
         for (titulo, funcion) in self.opciones:
             if indice == self.seleccionado:
-                color = (200, 0, 0)
+                color = (133, 63, 255)
             else:
-                color = (0, 0, 0)
+                color = (255, 255, 255)
 
             imagen = self.font.render(titulo, 1, color)
             posicion = (x, y + altura_de_opcion * indice)
